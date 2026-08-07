@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">WasteLoop logo</title>
+  <desc id="desc">Circular recycling mark with Government of India colors</desc>
+  <rect width="96" height="96" rx="12" fill="#ffffff"/>
+  <circle cx="48" cy="48" r="39" fill="#f4f7fb" stroke="#003366" stroke-width="4"/>
+  <path d="M48 17c8 0 15 3 21 8l-7 7c-4-3-8-5-14-5-9 0-17 6-20 14h10L24 57 10 41h8c3-14 15-24 30-24Z" fill="#2e8b57"/>
+  <path d="M78 41c3 14-5 29-18 35-12 6-27 3-36-7l7-7c6 7 16 9 25 5 8-4 13-12 13-21l-9 5 5-21 21 5-8 6Z" fill="#ff9933"/>
+  <circle cx="48" cy="48" r="12" fill="#003366"/>
+  <path d="M43 48h10M48 43v10" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+</svg>
