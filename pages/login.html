@@ -1,10 +1,110 @@
-﻿<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Citizen Login | WasteLoop</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/forms.css"></head><body><a class="skip-link" href="#main-content">Skip to main content</a>
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Citizen Login — WasteLoop National Waste Management Portal.">
+  <title>Citizen Login | WasteLoop</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/forms.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
 <header class="site-header">
-  <div class="govt-strip"><div class="container govt-strip-inner"><span>Government of India</span><span>Ministry of Environment, Forest and Climate Change</span></div></div>
+  <div class="govt-strip">
+    <div class="container govt-strip-inner">
+      <span>Government of India</span>
+      <span>Ministry of Environment, Forest and Climate Change</span>
+    </div>
+  </div>
   <div class="container brand-row">
-    <a class="brand" href="../index.html" aria-label="WasteLoop home"><img src="../assets/icons/wasteloop-logo.svg" alt="" class="brand-logo"><span><strong>WasteLoop</strong><small>National Waste Management & Recycling Portal</small></span></a>
-    <div class="header-actions"><span class="helpline">Helpline: 1800-11-9001</span><a class="login-link" href="login.html">Citizen Login</a></div>
+    <a class="brand" href="../index.html" aria-label="WasteLoop home">
+      <img src="../assets/icons/wasteloop-logo.svg" alt="" class="brand-logo">
+      <span>
+        <strong>WasteLoop</strong>
+        <small>National Waste Management &amp; Recycling Portal</small>
+      </span>
+    </a>
+    <div class="header-actions">
+      <span class="helpline">Helpline: 1800-11-9001</span>
+      <a class="login-link" href="login.html">Citizen Login</a>
+    </div>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">Menu</button>
   </div>
-  <nav class="primary-nav" id="primary-navigation" aria-label="Primary navigation"><div class="container nav-list"><a href="../index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="pickup.html">Request Pickup</a><a href="track.html">Track Request</a><a href="dashboard.html">Dashboard</a><a href="leaderboard.html">Leaderboard</a><a href="contact.html">Contact</a></div></nav>
-</header><main id="main-content"><section class="page-hero"><div class="container"><h1>Citizen Login</h1><p>Validate a sample citizen login using JavaScript only.</p></div></section><section class="section"><div class="container"><form class="form-panel" id="login-form" novalidate><div class="form-grid"><div class="form-field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email"><span class="error-text"></span></div><div class="form-field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password"><span class="error-text"></span></div></div><div class="form-actions"><button class="btn btn-primary" type="submit">Login</button><a class="btn btn-secondary" href="dashboard.html">View Demo Dashboard</a></div><div id="login-message" class="status-message" role="status"></div></form></div></section></main><footer class="site-footer"><div class="container footer-grid"><div><h2>WasteLoop</h2><p>Official Government of India waste management and recycling service portal.</p></div><div><h3>Important Links</h3><a href="contact.html">Contact</a><a href="#">Privacy Policy</a><a href="#">Terms & Conditions</a><a href="#">Accessibility</a></div><div><h3>Citizen Support</h3><p>Helpline: 1800-11-9001</p><p>Email: support@wasteloop.gov.in</p></div></div><div class="footer-bottom">Copyright 2026 WasteLoop. Government service demonstration portal.</div></footer><script src="../js/main.js"></script><script src="../js/validation.js"></script><script src="../js/login.js"></script></body></html>
+  <nav class="primary-nav" id="primary-navigation" aria-label="Primary navigation">
+    <div class="container nav-list">
+      <a href="../index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="pickup.html">Request Pickup</a>
+      <a href="track.html">Track Request</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-label">Secure Access</p>
+      <h1>Citizen Login</h1>
+      <p>Validate a sample citizen login using JavaScript only.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width:520px">
+      <form class="form-panel" id="login-form" novalidate>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+            <span class="error-text"></span>
+          </div>
+          <div class="form-field">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••">
+            <span class="error-text"></span>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">Login</button>
+          <a class="btn btn-secondary" href="dashboard.html">View Demo Dashboard</a>
+        </div>
+        <div id="login-message" class="status-message" role="status"></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <h2>WasteLoop</h2>
+      <p>Official Government of India waste management and recycling service portal.</p>
+    </div>
+    <div>
+      <h3>Important Links</h3>
+      <a href="contact.html">Contact</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms &amp; Conditions</a>
+      <a href="#">Accessibility</a>
+    </div>
+    <div>
+      <h3>Citizen Support</h3>
+      <p>Helpline: 1800-11-9001</p>
+      <p>Email: support@wasteloop.gov.in</p>
+    </div>
+  </div>
+  <div class="footer-bottom container">Copyright &copy; 2026 WasteLoop. Government service demonstration portal.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/validation.js"></script>
+<script src="../js/login.js"></script>
+</body>
+</html>
