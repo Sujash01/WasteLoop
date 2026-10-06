@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="WasteLoop — Government of India portal for responsible waste pickup, segregation, recycling, and citizen green rewards.">
-  <title>WasteLoop | National Waste Management &amp; Recycling Portal</title>
+  <meta name="description" content="WasteLoop is a college academic prototype for responsible waste pickup, segregation, recycling, and citizen green rewards. Not a government service.">
+  <title>WasteLoop | Academic Prototype for Waste Pickup &amp; Recycling</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/portal.css">
 </head>
 <body>
 
@@ -14,8 +15,8 @@
 <header class="site-header">
   <div class="govt-strip">
     <div class="container govt-strip-inner">
-      <span>Government of India</span>
-      <span>Ministry of Environment, Forest and Climate Change</span>
+      <span>Government of India &mdash; Academic Prototype</span>
+      <span>Ministry of Environment, Forest and Climate Change (demonstration)</span>
     </div>
   </div>
   <div class="container brand-row">
@@ -38,9 +39,11 @@
       <a href="pages/about.html">About</a>
       <a href="pages/services.html">Services</a>
       <a href="pages/pickup.html">Request Pickup</a>
-      <a href="pages/track.html">Track Request</a>
+      <a href="pages/track.html">Track Collection</a>
+      <a href="pages/waste-guide.html">Waste Guide</a>
       <a href="pages/dashboard.html">Dashboard</a>
       <a href="pages/leaderboard.html">Leaderboard</a>
+      <a href="pages/grievance.html">Grievance</a>
       <a href="pages/contact.html">Contact</a>
     </div>
   </nav>
@@ -52,12 +55,12 @@
   <section class="hero">
     <div class="container hero-grid">
       <div class="hero-copy">
-        <p class="section-label">Official Digital Service</p>
+        <p class="section-label">Citizen Services</p>
         <h1>Waste management,<br>reimagined.</h1>
-        <p>A Government of India portal for responsible waste pickup, segregation, recycling awareness, and citizen green rewards.</p>
+        <p>A prototype portal for responsible waste pickup, live collection tracking, segregation guidance, digital recycling certificates and citizen green rewards.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="pages/pickup.html">Request Pickup</a>
-          <a class="btn btn-secondary" href="pages/track.html">Track Request</a>
+          <a class="btn btn-secondary" href="pages/track.html">Track Collection</a>
         </div>
       </div>
       <div class="hero-panel" aria-label="WasteLoop service summary">
@@ -66,31 +69,24 @@
     </div>
   </section>
 
-  <!-- Stats -->
+  <!-- Stats — live figures from GET /api/impact -->
   <section class="section">
     <div class="container">
       <div class="section-heading">
-        <p class="section-label">National Indicators</p>
-        <h2>Government Service Statistics</h2>
+        <p class="section-label">Environmental Impact</p>
+        <h2>Portal Activity Summary</h2>
       </div>
-      <div class="stats-grid">
+      <div class="stats-grid" id="home-stats">
         <article class="stat-card">
-          <span class="stat-number">12.4L+</span>
-          <span>Pickup requests processed</span>
-        </article>
-        <article class="stat-card">
-          <span class="stat-number">8.7L+</span>
-          <span>Households participating</span>
-        </article>
-        <article class="stat-card">
-          <span class="stat-number">2,450+</span>
-          <span>Urban local bodies linked</span>
-        </article>
-        <article class="stat-card">
-          <span class="stat-number">68%</span>
-          <span>Waste routed to recovery</span>
+          <span class="stat-number">—</span>
+          <span>Loading portal activity…</span>
         </article>
       </div>
+      <p class="impact-note" style="margin-top:18px">
+        These figures are calculated live from the pickup records stored by this
+        prototype portal. They are demonstration data and do not represent official
+        government statistics.
+      </p>
     </div>
   </section>
 
@@ -104,18 +100,39 @@
       <div class="service-grid">
         <article class="service-card">
           <img src="assets/icons/pickup.svg" alt="">
-          <h3>Pickup Request</h3>
-          <p>Schedule dry, wet, e-waste, plastic, metal, paper, and hazardous waste pickup.</p>
+          <h3>Waste Collection Services</h3>
+          <p>Schedule dry, wet, e-waste, plastic, metal, paper and hazardous waste pickup for a future date.</p>
+          <p><a href="pages/pickup.html">Request Pickup &rarr;</a></p>
         </article>
         <article class="service-card">
           <img src="assets/icons/recycle.svg" alt="">
-          <h3>Recycling Guide</h3>
-          <p>Learn approved segregation methods for homes, institutions, and markets.</p>
+          <h3>Live Track Collection</h3>
+          <p>Watch the allocated collector vehicle approach your home with live distance, ETA and status.</p>
+          <p><a href="pages/track.html">Track Collection &rarr;</a></p>
+        </article>
+        <article class="service-card">
+          <img src="assets/icons/recycle.svg" alt="">
+          <h3>Smart Waste Disposal Guide</h3>
+          <p>Search any item to learn its waste type, recycling status, correct disposal and Green Points.</p>
+          <p><a href="pages/waste-guide.html">Open Waste Guide &rarr;</a></p>
         </article>
         <article class="service-card">
           <img src="assets/icons/reward.svg" alt="">
-          <h3>Green Rewards</h3>
-          <p>Earn points and certificates for verified recycling activity.</p>
+          <h3>Environmental Impact</h3>
+          <p>Track total waste recycled, plastic diverted, paper recovered and estimated CO2 saved.</p>
+          <p><a href="pages/dashboard.html">View Dashboard &rarr;</a></p>
+        </article>
+        <article class="service-card">
+          <img src="assets/icons/reward.svg" alt="">
+          <h3>Digital Recycling Certificate</h3>
+          <p>Completed pickups unlock a printable government-style certificate with a verification number.</p>
+          <p><a href="pages/dashboard.html">View Certificates &rarr;</a></p>
+        </article>
+        <article class="service-card">
+          <img src="assets/icons/support.svg" alt="">
+          <h3>Grievance Redressal</h3>
+          <p>Register and track complaints about pickup delay, missed collection or collector behaviour.</p>
+          <p><a href="pages/grievance.html">File a Grievance &rarr;</a></p>
         </article>
       </div>
     </div>
@@ -138,7 +155,7 @@
   <div class="container footer-grid">
     <div>
       <h2>WasteLoop</h2>
-      <p>Official Government of India waste management and recycling service portal.</p>
+      <p>Academic prototype of a citizen waste management portal. Not an official Government of India service.</p>
     </div>
     <div>
       <h3>Important Links</h3>
@@ -149,13 +166,16 @@
     </div>
     <div>
       <h3>Citizen Support</h3>
-      <p>Helpline: 1800-11-9001</p>
-      <p>Email: support@wasteloop.gov.in</p>
+      <p>Prototype Helpline: 1800-11-9001</p>
+      <p>Email: support@wasteloop.example</p>
     </div>
   </div>
-  <div class="footer-bottom container">Copyright &copy; 2026 WasteLoop. Government service demonstration portal.</div>
+  <div class="footer-bottom container">College project prototype &mdash; Government-style interface for academic demonstration only.</div>
 </footer>
 
 <script src="js/main.js"></script>
+<script src="js/dates.js"></script>
+<script src="js/api.js"></script>
+<script src="js/home.js"></script>
 </body>
 </html>

@@ -5,14 +5,14 @@
   if (contactForm) {
     contactForm.addEventListener('submit', function (event) {
       event.preventDefault();
-      var valid = WasteLoopValidation.validateRequired(contactForm, [
+      var result = WasteLoopValidation.validateRequired(contactForm, [
         { name: 'name', label: 'Name' },
         { name: 'email', label: 'Email', type: 'email' },
         { name: 'subject', label: 'Subject' },
         { name: 'message', label: 'Message', minLength: 10 }
       ]);
 
-      if (!valid) {
+      if (!result.valid) {
         WasteLoopValidation.setMessage(message, 'Please complete the highlighted fields.', 'error');
         return;
       }

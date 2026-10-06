@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WasteLoop Grievance Redressal — register and track a complaint about a waste pickup.">
+  <title>Grievance Redressal | WasteLoop</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/forms.css">
+  <link rel="stylesheet" href="../css/portal.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header class="site-header">
+  <div class="govt-strip">
+    <div class="container govt-strip-inner">
+      <span>Government of India — Academic Prototype</span>
+      <span>Ministry of Environment, Forest and Climate Change (demonstration)</span>
+    </div>
+  </div>
+  <div class="container brand-row">
+    <a class="brand" href="../index.html" aria-label="WasteLoop home">
+      <img src="../assets/icons/wasteloop-logo.svg" alt="" class="brand-logo">
+      <span>
+        <strong>WasteLoop</strong>
+        <small>National Waste Management &amp; Recycling Portal</small>
+      </span>
+    </a>
+    <div class="header-actions">
+      <span class="helpline">Helpline: 1800-11-9001</span>
+      <a class="login-link" href="login.html">Citizen Login</a>
+    </div>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">Menu</button>
+  </div>
+  <nav class="primary-nav" id="primary-navigation" aria-label="Primary navigation">
+    <div class="container nav-list">
+      <a href="../index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="pickup.html">Request Pickup</a>
+      <a href="track.html">Track Collection</a>
+      <a href="waste-guide.html">Waste Guide</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="grievance.html">Grievance</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-label">Grievance Redressal</p>
+      <h1>Citizen Grievance Portal</h1>
+      <p>Register a complaint about a waste collection service and track its redressal status. Complaints are acknowledged immediately with a Grievance ID.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact-grid">
+      <!-- Complaint form -->
+      <form class="form-panel" id="grievance-form" novalidate>
+        <h2 class="form-title">Register a Grievance</h2>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="grievance-citizenName">Citizen Name</label>
+            <input id="grievance-citizenName" name="citizenName" type="text" autocomplete="name" placeholder="Full name">
+            <span class="error-text"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="grievance-mobile">Mobile Number</label>
+            <input id="grievance-mobile" name="mobile" type="tel" maxlength="10" inputmode="numeric" autocomplete="tel" placeholder="10-digit number">
+            <span class="error-text"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="grievance-complaintType">Complaint Type</label>
+            <select id="grievance-complaintType" name="complaintType">
+              <option value="">Select complaint type</option>
+              <option>Pickup Delay</option>
+              <option>Missed Pickup</option>
+              <option>Incorrect Collection</option>
+              <option>Collector Behaviour</option>
+              <option>Waste Not Collected</option>
+              <option>Other</option>
+            </select>
+            <span class="error-text"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="grievance-contactMethod">Preferred Contact Method</label>
+            <select id="grievance-contactMethod" name="contactMethod">
+              <option value="">Select contact method</option>
+              <option>Phone Call</option>
+              <option>SMS</option>
+              <option>Email</option>
+              <option>WhatsApp</option>
+            </select>
+            <span class="error-text"></span>
+          </div>
+
+          <div class="form-field full">
+            <label for="grievance-pickupId">Pickup Request ID</label>
+            <input id="grievance-pickupId" name="pickupId" type="text" list="grievance-pickups" placeholder="Example: WL20491" autocomplete="off">
+            <datalist id="grievance-pickups"></datalist>
+            <span class="error-text"></span>
+            <small class="field-hint">The ID you received when booking the collection, e.g. WL20491.</small>
+          </div>
+
+          <div class="form-field full">
+            <label for="grievance-email">Email (optional)</label>
+            <input id="grievance-email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+            <span class="error-text"></span>
+          </div>
+
+          <div class="form-field full">
+            <label for="grievance-description">Description of Complaint</label>
+            <textarea id="grievance-description" name="description" placeholder="Describe what happened, including the date and locality (minimum 15 characters)"></textarea>
+            <span class="error-text"></span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" id="grievance-submit" type="submit">Submit Grievance</button>
+          <button class="btn btn-secondary" type="reset">Reset</button>
+        </div>
+
+        <div id="grievance-message" class="status-message" role="status"></div>
+      </form>
+
+      <!-- Track an existing grievance -->
+      <div class="form-panel">
+        <h2 class="form-title">Track a Grievance</h2>
+        <form id="grievance-track-form" novalidate>
+          <div class="form-field">
+            <label for="grievance-track-id">Grievance ID</label>
+            <input id="grievance-track-id" name="grievanceId" type="text" placeholder="Example: GRV-2026-10482" autocomplete="off">
+            <span class="error-text"></span>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Track Status</button>
+          </div>
+          <div id="grievance-track-message" class="status-message" role="status"></div>
+        </form>
+
+        <h3 class="aside-title">Redressal Process</h3>
+        <ol class="timeline-list">
+          <li>Submitted — complaint received and acknowledged</li>
+          <li>Under Review — verified by the Ward Officer</li>
+          <li>Assigned — allotted to the concerned collection staff</li>
+          <li>Resolved — corrective action completed</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Grievance ticket -->
+  <section class="section section-muted">
+    <div class="container">
+      <div class="section-heading">
+        <p class="section-label">Grievance Tracking</p>
+        <h2>Grievance Status</h2>
+      </div>
+
+      <div class="grievance-ticket" id="grievance-ticket" hidden>
+        <p class="section-label">Grievance ID</p>
+        <p class="detail-id" id="ticket-id">—</p>
+        <span class="status-pill" id="ticket-status">—</span>
+
+        <ul class="status-flow-track" id="ticket-flow"></ul>
+
+        <dl class="receipt-grid">
+          <dt>Complaint Type</dt><dd id="ticket-type">—</dd>
+          <dt>Pickup Request ID</dt><dd id="ticket-pickup">—</dd>
+          <dt>Reference Number</dt><dd id="ticket-reference">—</dd>
+          <dt>Contact</dt><dd id="ticket-mobile">—</dd>
+          <dt>Description</dt><dd id="ticket-description">—</dd>
+        </dl>
+      </div>
+
+      <div class="empty-state" id="grievance-empty">
+        Submit a grievance or enter a Grievance ID above to see its current status here.
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <h2>WasteLoop</h2>
+      <p>Academic prototype of a citizen waste management portal. Not an official Government of India service.</p>
+    </div>
+    <div>
+      <h3>Important Links</h3>
+      <a href="contact.html">Contact</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms &amp; Conditions</a>
+      <a href="#">Accessibility</a>
+    </div>
+    <div>
+      <h3>Citizen Support</h3>
+      <p>Prototype Helpline: 1800-11-9001</p>
+      <p>support@wasteloop.example</p>
+    </div>
+  </div>
+  <div class="footer-bottom container">College project prototype — Government-style interface for academic demonstration only.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/validation.js"></script>
+<script src="../js/dates.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/grievance.js"></script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+/**
+ * WasteLoop — Feature 5: Digital Recycling Certificate
+ *
+ * A certificate can only be generated for a pickup whose status is Completed —
+ * the Node.js backend enforces this rule (lib/domain.js -> generateCertificate
+ * returns 409 for any other status), so the check cannot be bypassed.
+ *
+ * The certificate is rendered with plain DOM manipulation and printed using the
+ * browser's own print dialog. No PDF library is used.
+ *
+ * Access:
+ *   certificate.html?id=WL-CERT-92841   -> view an issued certificate
+ *   certificate.html?pickup=WL20491     -> generate one for a completed pickup
+ */
+
+(function () {
+  var els = {
+    section: document.getElementById('certificate-section'),
+    holder: document.getElementById('certificate-holder'),
+    toolbar: document.getElementById('certificate-toolbar'),
+    printButton: document.getElementById('print-certificate'),
+    message: document.getElementById('certificate-message'),
+    link: document.getElementById('certificate-link')
+  };
+
+  var LOGO_PATH = '../assets/icons/wasteloop-logo.svg';
+
+  function setText(element, value) {
+    if (element) element.textContent = value;
+  }
+
+  /* ------------------------------------------------------------------
+     Small builder helpers
+     ------------------------------------------------------------------ */
+  function element(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined && text !== null) node.textContent = text;
+    return node;
+  }
+
+  function metaItem(label, value) {
+    var wrap = document.createElement('div');
+    wrap.appendChild(element('span', null, label));
+    wrap.appendChild(element('strong', null, value));
+    return wrap;
+  }
+
+  /* ------------------------------------------------------------------
+     Building the certificate
+     ------------------------------------------------------------------ */
+  function buildCertificate(certificate) {
+    var pickup = certificate.pickup || {};
+
+    var sheet = element('article', 'certificate');
+    sheet.id = 'wasteloop-certificate';
+
+    /* Emblem */
+    var emblem = element('div', 'cert-emblem');
+    var logo = document.createElement('img');
+    logo.src = LOGO_PATH;
+    logo.alt = '';
+    emblem.appendChild(logo);
+    sheet.appendChild(emblem);
+
+    /* Government-style header (prototype wording) */
+    sheet.appendChild(element('p', 'cert-govt', 'Government of India'));
+    sheet.appendChild(
+      element(
+        'p',
+        'cert-ministry',
+        'Ministry of Environment, Forest and Climate Change'
+      )
+    );
+    sheet.appendChild(element('p', 'cert-brand', 'WasteLoop'));
+    sheet.appendChild(element('div', 'cert-rule'));
+    sheet.appendChild(element('h2', 'cert-title', 'Recycling Certificate'));
+
+    /* Body */
+    sheet.appendChild(element('p', 'cert-body', 'This certifies that'));
+    sheet.appendChild(element('p', 'cert-name', certificate.citizenName));
+    sheet.appendChild(
+      element('p', 'cert-body', 'has responsibly submitted the following waste for recycling:')
+    );
+    sheet.appendChild(
+      element(
+        'p',
+        'cert-highlight',
+        Number(certificate.weight).toFixed(2).replace(/\.00$/, '') + ' KG ' + certificate.wasteCategory.toUpperCase()
+      )
+    );
+    sheet.appendChild(
+      element(
+        'p',
+        'cert-body',
+        'for processing at ' + certificate.recyclingCentre + '.'
+      )
+    );
+
+    /* Reference block */
+    var meta = element('div', 'cert-meta');
+    meta.appendChild(metaItem('Certificate ID', certificate.id));
+    meta.appendChild(metaItem('Pickup ID', certificate.pickupId));
+    meta.appendChild(
+      metaItem('Date of Issue', certificate.issueDateLong || certificate.issuedOn)
+    );
+    meta.appendChild(
+      metaItem('Pickup Date', pickup.pickupDateLong || certificate.pickupId)
+    );
+    meta.appendChild(metaItem('Verification Number', certificate.verificationNumber));
+    meta.appendChild(metaItem('Green Points Credited', String(certificate.greenPoints || 0)));
+    meta.appendChild(metaItem('Collection Vehicle', pickup.collector ? pickup.collector.vehicle : '—'));
+    meta.appendChild(metaItem('Collected By', pickup.collector ? pickup.collector.name : '—'));
+    sheet.appendChild(meta);
+
+    /* Signatures */
+    var signatures = element('div', 'cert-signatures');
+    [
+      'Collection Supervisor',
+      'Recycling Centre In-charge',
+      'WasteLoop Grievance Cell'
+    ].forEach(function (role) {
+      var block = document.createElement('div');
+      block.appendChild(element('strong', null, role));
+      signatures.appendChild(block);
+    });
+    sheet.appendChild(signatures);
+
+    /* Seal */
+    sheet.appendChild(
+      element('div', 'cert-seal', 'WasteLoop Verified Copy')
+    );
+
+    /* Honest disclaimer — this is a prototype, not an official document. */
+    sheet.appendChild(
+      element(
+        'p',
+        'cert-disclaimer',
+        'Academic prototype certificate generated by the WasteLoop college project for demonstration purposes. ' +
+          'It is not a legal document, carries no government authority, and is not issued by the Government of India. ' +
+          'Reference for academic evaluation only.'
+      )
+    );
+
+    return sheet;
+  }
+
+  function renderCertificate(certificate) {
+    if (!els.holder) return;
+
+    els.holder.innerHTML = '';
+    els.holder.appendChild(buildCertificate(certificate));
+
+    if (els.section) els.section.hidden = false;
+    if (els.toolbar) els.toolbar.hidden = false;
+
+    if (els.link) {
+      els.link.href = 'certificate.html?id=' + encodeURIComponent(certificate.id);
+      els.link.hidden = false;
+    }
+  }
+
+  function showError(text) {
+    if (els.message) {
+      els.message.className = 'status-message error';
+      els.message.textContent = text;
+    }
+    if (els.section) els.section.hidden = true;
+    if (els.toolbar) els.toolbar.hidden = true;
+  }
+
+  /* ------------------------------------------------------------------
+     Loading
+     ------------------------------------------------------------------ */
+  async function loadCertificateById(id) {
+    try {
+      var data = await WasteLoopApi.getCertificate(id);
+      renderCertificate(data.certificate);
+      setText(els.message, 'Certificate ' + data.certificate.id + ' loaded.');
+      if (els.message) els.message.className = 'status-message success';
+    } catch (error) {
+      showError(error.message);
+    }
+  }
+
+  async function loadByPickup(pickupId) {
+    try {
+      var data = await WasteLoopApi.createCertificate(pickupId);
+      renderCertificate(data.certificate);
+      setText(els.message, data.message);
+      if (els.message) els.message.className = 'status-message success';
+      // Keep the URL shareable from now on.
+      window.history.replaceState(null, '', 'certificate.html?id=' + encodeURIComponent(data.certificate.id));
+    } catch (error) {
+      showError(error.message);
+    }
+  }
+
+  /* ------------------------------------------------------------------
+     Print button — uses the browser's own print dialog.
+     CSS hides everything except .certificate in print media.
+     ------------------------------------------------------------------ */
+  if (els.printButton) {
+    els.printButton.addEventListener('click', function () {
+      window.print();
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     Start-up
+     ------------------------------------------------------------------ */
+  var params = new URLSearchParams(window.location.search);
+  var certificateId = params.get('id');
+  var pickupId = params.get('pickup');
+
+  if (certificateId) {
+    loadCertificateById(certificateId);
+  } else if (pickupId) {
+    loadByPickup(pickupId);
+  } else {
+    showError(
+      'Open this page with ?id=WL-CERT-92841 to view a certificate, or ?pickup=WL20491 to generate one for a completed pickup.'
+    );
+  }
+})();

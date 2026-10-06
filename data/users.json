@@ -1,0 +1,32 @@
+[
+  {
+    "id": "USR-10001",
+    "name": "Aarav Sharma",
+    "mobile": "9876500011",
+    "email": "aarav@example.in",
+    "city": "Ludhiana",
+    "pincode": "141001",
+    "role": "Citizen",
+    "createdAt": "2026-10-06T05:19:14.444Z"
+  },
+  {
+    "id": "USR-10002",
+    "name": "Meera Iyer",
+    "mobile": "9876500022",
+    "email": "meera@example.in",
+    "city": "Ludhiana",
+    "pincode": "141002",
+    "role": "Citizen",
+    "createdAt": "2026-10-06T05:19:14.444Z"
+  },
+  {
+    "id": "USR-10003",
+    "name": "Rohan Verma",
+    "mobile": "9876500033",
+    "email": "rohan@example.in",
+    "city": "Ludhiana",
+    "pincode": "141003",
+    "role": "Citizen",
+    "createdAt": "2026-10-06T05:19:14.444Z"
+  }
+]

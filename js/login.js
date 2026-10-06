@@ -13,12 +13,12 @@
   if (form) {
     form.addEventListener('submit', async function (event) {
       event.preventDefault();
-      var valid = WasteLoopValidation.validateRequired(form, [
+      var result = WasteLoopValidation.validateRequired(form, [
         { name: 'email', label: 'Email', type: 'email' },
         { name: 'password', label: 'Password', minLength: 6 }
       ]);
 
-      if (!valid) {
+      if (!result.valid) {
         WasteLoopValidation.setMessage(message, 'Please correct the login details.', 'error');
         return;
       }

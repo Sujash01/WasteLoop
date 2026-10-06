@@ -1,0 +1,378 @@
+[
+  {
+    "id": "WL44443",
+    "citizenName": "Aarav Sharma",
+    "mobile": "9876500011",
+    "email": "aarav@example.in",
+    "address": "House No. 22, Model Town",
+    "city": "Ludhiana",
+    "pincode": "141001",
+    "wasteCategory": "Plastic Waste",
+    "weight": 8,
+    "pickupDate": "2026-09-15",
+    "remarks": "Seeded demonstration record.",
+    "status": "Completed",
+    "statusHistory": [
+      {
+        "status": "Collector Assigned",
+        "at": "2026-09-15T05:19:14.444Z"
+      },
+      {
+        "status": "On the Way",
+        "at": "2026-09-15T05:34:14.444Z"
+      },
+      {
+        "status": "Arriving",
+        "at": "2026-09-15T05:49:14.444Z"
+      },
+      {
+        "status": "Collected",
+        "at": "2026-09-15T06:04:14.444Z"
+      },
+      {
+        "status": "Completed",
+        "at": "2026-09-15T06:19:14.444Z"
+      }
+    ],
+    "collector": {
+      "name": "Raj Kumar",
+      "vehicle": "PB10 AB 1234",
+      "rating": 4.8,
+      "phone": "98765-43210",
+      "zone": "Ludhiana North"
+    },
+    "distanceKm": 0,
+    "etaMinutes": 0,
+    "certificateId": null,
+    "seeded": true,
+    "createdAt": "2026-09-15T05:19:14.444Z",
+    "updatedAt": "2026-09-15T05:19:14.444Z"
+  },
+  {
+    "id": "WL44449",
+    "citizenName": "Aarav Sharma",
+    "mobile": "9876500011",
+    "email": "aarav@example.in",
+    "address": "House No. 22, Model Town",
+    "city": "Ludhiana",
+    "pincode": "141001",
+    "wasteCategory": "Paper Waste",
+    "weight": 5,
+    "pickupDate": "2026-09-19",
+    "remarks": "Seeded demonstration record.",
+    "status": "Completed",
+    "statusHistory": [
+      {
+        "status": "Collector Assigned",
+        "at": "2026-09-19T05:19:14.444Z"
+      },
+      {
+        "status": "On the Way",
+        "at": "2026-09-19T05:34:14.444Z"
+      },
+      {
+        "status": "Arriving",
+        "at": "2026-09-19T05:49:14.444Z"
+      },
+      {
+        "status": "Collected",
+        "at": "2026-09-19T06:04:14.444Z"
+      },
+      {
+        "status": "Completed",
+        "at": "2026-09-19T06:19:14.444Z"
+      }
+    ],
+    "collector": {
+      "name": "Manpreet Singh",
+      "vehicle": "PB10 EF 9012",
+      "rating": 4.7,
+      "phone": "98765-43212",
+      "zone": "Ludhiana East"
+    },
+    "distanceKm": 0,
+    "etaMinutes": 0,
+    "certificateId": null,
+    "seeded": true,
+    "createdAt": "2026-09-19T05:19:14.444Z",
+    "updatedAt": "2026-09-19T05:19:14.444Z"
+  },
+  {
+    "id": "WL44447",
+    "citizenName": "Aarav Sharma",
+    "mobile": "9876500011",
+    "email": "aarav@example.in",
+    "address": "House No. 22, Model Town",
+    "city": "Ludhiana",
+    "pincode": "141001",
+    "wasteCategory": "Metal Waste",
+    "weight": 3,
+    "pickupDate": "2026-09-22",
+    "remarks": "Seeded demonstration record.",
+    "status": "Completed",
+    "statusHistory": [
+      {
+        "status": "Collector Assigned",
+        "at": "2026-09-22T05:19:14.444Z"
+      },
+      {
+        "status": "On the Way",
+        "at": "2026-09-22T05:34:14.444Z"
+      },
+      {
+        "status": "Arriving",
+        "at": "2026-09-22T05:49:14.444Z"
+      },
+      {
+        "status": "Collected",
+        "at": "2026-09-22T06:04:14.444Z"
+      },
+      {
+        "status": "Completed",
+        "at": "2026-09-22T06:19:14.444Z"
+      }
+    ],
+    "collector": {
+      "name": "Arun Lal",
+      "vehicle": "PB10 GH 3456",
+      "rating": 4.6,
+      "phone": "98765-43213",
+      "zone": "Ludhiana West"
+    },
+    "distanceKm": 0,
+    "etaMinutes": 0,
+    "certificateId": null,
+    "seeded": true,
+    "createdAt": "2026-09-22T05:19:14.444Z",
+    "updatedAt": "2026-09-22T05:19:14.444Z"
+  },
+  {
+    "id": "WL44446",
+    "citizenName": "Meera Iyer",
+    "mobile": "9876500022",
+    "email": "meera@example.in",
+    "address": "Flat 3B, Green Park",
+    "city": "Ludhiana",
+    "pincode": "141002",
+    "wasteCategory": "Wet Waste",
+    "weight": 6,
+    "pickupDate": "2026-09-25",
+    "remarks": "Seeded demonstration record.",
+    "status": "Completed",
+    "statusHistory": [
+      {
+        "status": "Collector Assigned",
+        "at": "2026-09-25T05:19:14.444Z"
+      },
+      {
+        "status": "On the Way",
+        "at": "2026-09-25T05:34:14.444Z"
+      },
+      {
+        "status": "Arriving",
+        "at": "2026-09-25T05:49:14.444Z"
+      },
+      {
+        "status": "Collected",
+        "at": "2026-09-25T06:04:14.444Z"
+      },
+      {
+        "status": "Completed",
+        "at": "2026-09-25T06:19:14.444Z"
+      }
+    ],
+    "collector": {
+      "name": "Manpreet Singh",
+      "vehicle": "PB10 EF 9012",
+      "rating": 4.7,
+      "phone": "98765-43212",
+      "zone": "Ludhiana East"
+    },
+    "distanceKm": 0,
+    "etaMinutes": 0,
+    "certificateId": null,
+    "seeded": true,
+    "createdAt": "2026-09-25T05:19:14.444Z",
+    "updatedAt": "2026-09-25T05:19:14.444Z"
+  },
+  {
+    "id": "WL44444",
+    "citizenName": "Rohan Verma",
+    "mobile": "9876500033",
+    "email": "rohan@example.in",
+    "address": "Plot 7, Industrial Area",
+    "city": "Ludhiana",
+    "pincode": "141003",
+    "wasteCategory": "E-Waste",
+    "weight": 2.5,
+    "pickupDate": "2026-09-27",
+    "remarks": "Seeded demonstration record.",
+    "status": "Completed",
+    "statusHistory": [
+      {
+        "status": "Collector Assigned",
+        "at": "2026-09-27T05:19:14.444Z"
+      },
+      {
+        "status": "On the Way",
+        "at": "2026-09-27T05:34:14.444Z"
+      },
+      {
+        "status": "Arriving",
+        "at": "2026-09-27T05:49:14.444Z"
+      },
+      {
+        "status": "Collected",
+        "at": "2026-09-27T06:04:14.444Z"
+      },
+      {
+        "status": "Completed",
+        "at": "2026-09-27T06:19:14.444Z"
+      }
+    ],
+    "collector": {
+      "name": "Manpreet Singh",
+      "vehicle": "PB10 EF 9012",
+      "rating": 4.7,
+      "phone": "98765-43212",
+      "zone": "Ludhiana East"
+    },
+    "distanceKm": 0,
+    "etaMinutes": 0,
+    "certificateId": null,
+    "seeded": true,
+    "createdAt": "2026-09-27T05:19:14.444Z",
+    "updatedAt": "2026-09-27T05:19:14.444Z"
+  },
+  {
+    "id": "WL44441",
+    "citizenName": "Aarav Sharma",
+    "mobile": "9876500011",
+    "email": "aarav@example.in",
+    "address": "House No. 22, Model Town",
+    "city": "Ludhiana",
+    "pincode": "141001",
+    "wasteCategory": "Glass Waste",
+    "weight": 4,
+    "pickupDate": "2026-09-30",
+    "remarks": "Seeded demonstration record.",
+    "status": "Completed",
+    "statusHistory": [
+      {
+        "status": "Collector Assigned",
+        "at": "2026-09-30T05:19:14.444Z"
+      },
+      {
+        "status": "On the Way",
+        "at": "2026-09-30T05:34:14.444Z"
+      },
+      {
+        "status": "Arriving",
+        "at": "2026-09-30T05:49:14.444Z"
+      },
+      {
+        "status": "Collected",
+        "at": "2026-09-30T06:04:14.444Z"
+      },
+      {
+        "status": "Completed",
+        "at": "2026-09-30T06:19:14.444Z"
+      }
+    ],
+    "collector": {
+      "name": "Raj Kumar",
+      "vehicle": "PB10 AB 1234",
+      "rating": 4.8,
+      "phone": "98765-43210",
+      "zone": "Ludhiana North"
+    },
+    "distanceKm": 0,
+    "etaMinutes": 0,
+    "certificateId": null,
+    "seeded": true,
+    "createdAt": "2026-09-30T05:19:14.444Z",
+    "updatedAt": "2026-09-30T05:19:14.444Z"
+  },
+  {
+    "id": "WL44443",
+    "citizenName": "Meera Iyer",
+    "mobile": "9876500022",
+    "email": "meera@example.in",
+    "address": "Flat 3B, Green Park",
+    "city": "Ludhiana",
+    "pincode": "141002",
+    "wasteCategory": "Plastic Waste",
+    "weight": 6.5,
+    "pickupDate": "2026-10-02",
+    "remarks": "Seeded demonstration record.",
+    "status": "Completed",
+    "statusHistory": [
+      {
+        "status": "Collector Assigned",
+        "at": "2026-10-02T05:19:14.444Z"
+      },
+      {
+        "status": "On the Way",
+        "at": "2026-10-02T05:34:14.444Z"
+      },
+      {
+        "status": "Arriving",
+        "at": "2026-10-02T05:49:14.444Z"
+      },
+      {
+        "status": "Collected",
+        "at": "2026-10-02T06:04:14.444Z"
+      },
+      {
+        "status": "Completed",
+        "at": "2026-10-02T06:19:14.444Z"
+      }
+    ],
+    "collector": {
+      "name": "Raj Kumar",
+      "vehicle": "PB10 AB 1234",
+      "rating": 4.8,
+      "phone": "98765-43210",
+      "zone": "Ludhiana North"
+    },
+    "distanceKm": 0,
+    "etaMinutes": 0,
+    "certificateId": null,
+    "seeded": true,
+    "createdAt": "2026-10-02T05:19:14.444Z",
+    "updatedAt": "2026-10-02T05:19:14.444Z"
+  },
+  {
+    "id": "WL44443",
+    "citizenName": "Aarav Sharma",
+    "mobile": "9876500011",
+    "email": "aarav@example.in",
+    "address": "House No. 22, Model Town, Ludhiana",
+    "city": "Ludhiana",
+    "pincode": "141001",
+    "wasteCategory": "Plastic Waste",
+    "weight": 12.5,
+    "pickupDate": "2026-10-07",
+    "remarks": "Live tracking demonstration pickup.",
+    "status": "Collector Assigned",
+    "statusHistory": [
+      {
+        "status": "Collector Assigned",
+        "at": "2026-10-06T05:15:14.444Z"
+      }
+    ],
+    "collector": {
+      "name": "Raj Kumar",
+      "vehicle": "PB10 AB 1234",
+      "rating": 4.8,
+      "phone": "98765-43210",
+      "zone": "Ludhiana North"
+    },
+    "distanceKm": 4.6,
+    "etaMinutes": 14,
+    "certificateId": null,
+    "seeded": true,
+    "createdAt": "2026-10-06T05:19:14.444Z",
+    "updatedAt": "2026-10-06T05:19:14.444Z"
+  }
+]

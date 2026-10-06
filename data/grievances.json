@@ -1,0 +1,27 @@
+[
+  {
+    "id": "GRV-2026-44449",
+    "complaintType": "Pickup Delay",
+    "pickupId": "WL44443",
+    "description": "Collector arrived more than two hours after the scheduled slot for my sector.",
+    "citizenName": "Meera Iyer",
+    "mobile": "9876500022",
+    "email": "meera@example.in",
+    "contactMethod": "SMS",
+    "status": "Under Review",
+    "statusHistory": [
+      {
+        "status": "Submitted",
+        "at": "2026-10-04T05:19:14.444Z"
+      },
+      {
+        "status": "Under Review",
+        "at": "2026-10-05T05:19:14.444Z"
+      }
+    ],
+    "reference": "GRF-A9F7-F7F8",
+    "remarks": "Seeded demonstration grievance.",
+    "createdAt": "2026-10-04T05:19:14.444Z",
+    "updatedAt": "2026-10-05T05:19:14.444Z"
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "RWD44443",
+    "pickupId": "WL44443",
+    "citizenName": "Aarav Sharma",
+    "wasteCategory": "Plastic Waste",
+    "weight": 8,
+    "points": 64,
+    "reason": "Green points for completed Plastic Waste pickup",
+    "createdAt": "2026-09-15T05:19:14.444Z"
+  },
+  {
+    "id": "RWD44449",
+    "pickupId": "WL44449",
+    "citizenName": "Aarav Sharma",
+    "wasteCategory": "Paper Waste",
+    "weight": 5,
+    "points": 60,
+    "reason": "Green points for completed Paper Waste pickup",
+    "createdAt": "2026-09-19T05:19:14.444Z"
+  },
+  {
+    "id": "RWD44449",
+    "pickupId": "WL44447",
+    "citizenName": "Aarav Sharma",
+    "wasteCategory": "Metal Waste",
+    "weight": 3,
+    "points": 135,
+    "reason": "Green points for completed Metal Waste pickup",
+    "createdAt": "2026-09-22T05:19:14.444Z"
+  },
+  {
+    "id": "RWD44444",
+    "pickupId": "WL44446",
+    "citizenName": "Meera Iyer",
+    "wasteCategory": "Wet Waste",
+    "weight": 6,
+    "points": 18,
+    "reason": "Green points for completed Wet Waste pickup",
+    "createdAt": "2026-09-25T05:19:14.444Z"
+  },
+  {
+    "id": "RWD44444",
+    "pickupId": "WL44444",
+    "citizenName": "Rohan Verma",
+    "wasteCategory": "E-Waste",
+    "weight": 2.5,
+    "points": 55,
+    "reason": "Green points for completed E-Waste pickup",
+    "createdAt": "2026-09-27T05:19:14.444Z"
+  },
+  {
+    "id": "RWD44441",
+    "pickupId": "WL44441",
+    "citizenName": "Aarav Sharma",
+    "wasteCategory": "Glass Waste",
+    "weight": 4,
+    "points": 20,
+    "reason": "Green points for completed Glass Waste pickup",
+    "createdAt": "2026-09-30T05:19:14.444Z"
+  },
+  {
+    "id": "RWD44440",
+    "pickupId": "WL44443",
+    "citizenName": "Meera Iyer",
+    "wasteCategory": "Plastic Waste",
+    "weight": 6.5,
+    "points": 52,
+    "reason": "Green points for completed Plastic Waste pickup",
+    "createdAt": "2026-10-02T05:19:14.444Z"
+  }
+]

@@ -1,10 +1,224 @@
-﻿<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Track Request | WasteLoop</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/forms.css"><link rel="stylesheet" href="../css/dashboard.css"></head><body><a class="skip-link" href="#main-content">Skip to main content</a>
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Track your WasteLoop garbage collector in real time — vehicle location, distance, ETA and pickup status.">
+  <title>Track Collection | WasteLoop</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/forms.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/portal.css"></head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
 <header class="site-header">
-  <div class="govt-strip"><div class="container govt-strip-inner"><span>Government of India</span><span>Ministry of Environment, Forest and Climate Change</span></div></div>
+  <div class="govt-strip">
+    <div class="container govt-strip-inner">
+      <span>Government of India — Academic Prototype</span>
+      <span>Ministry of Environment, Forest and Climate Change (demonstration)</span>
+    </div>
+  </div>
   <div class="container brand-row">
-    <a class="brand" href="../index.html" aria-label="WasteLoop home"><img src="../assets/icons/wasteloop-logo.svg" alt="" class="brand-logo"><span><strong>WasteLoop</strong><small>National Waste Management & Recycling Portal</small></span></a>
-    <div class="header-actions"><span class="helpline">Helpline: 1800-11-9001</span><a class="login-link" href="login.html">Citizen Login</a></div>
+    <a class="brand" href="../index.html" aria-label="WasteLoop home">
+      <img src="../assets/icons/wasteloop-logo.svg" alt="" class="brand-logo">
+      <span>
+        <strong>WasteLoop</strong>
+        <small>National Waste Management &amp; Recycling Portal</small>
+      </span>
+    </a>
+    <div class="header-actions">
+      <span class="helpline">Helpline: 1800-11-9001</span>
+      <a class="login-link" href="login.html">Citizen Login</a>
+    </div>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">Menu</button>
   </div>
-  <nav class="primary-nav" id="primary-navigation" aria-label="Primary navigation"><div class="container nav-list"><a href="../index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="pickup.html">Request Pickup</a><a href="track.html">Track Request</a><a href="dashboard.html">Dashboard</a><a href="leaderboard.html">Leaderboard</a><a href="contact.html">Contact</a></div></nav>
-</header><main id="main-content"><section class="page-hero"><div class="container"><h1>Track Request</h1><p>Enter a request ID to view simulated pickup progress.</p></div></section><section class="section"><div class="container contact-grid"><form class="form-panel" id="track-form" novalidate><div class="form-field"><label for="request-id">Request ID</label><input id="request-id" name="requestId" type="text" placeholder="Example: WL-123456-789"><span class="error-text"></span></div><div class="form-actions"><button class="btn btn-primary" type="submit">Track Status</button></div><div id="track-message" class="status-message" role="status"></div></form><div class="timeline"><h2>Pickup Status</h2><ol class="timeline-list"><li>Pending</li><li>Collector Assigned</li><li>In Progress</li><li>Completed</li></ol></div></div></section></main><footer class="site-footer"><div class="container footer-grid"><div><h2>WasteLoop</h2><p>Official Government of India waste management and recycling service portal.</p></div><div><h3>Important Links</h3><a href="contact.html">Contact</a><a href="#">Privacy Policy</a><a href="#">Terms & Conditions</a><a href="#">Accessibility</a></div><div><h3>Citizen Support</h3><p>Helpline: 1800-11-9001</p><p>Email: support@wasteloop.gov.in</p></div></div><div class="footer-bottom">Copyright 2026 WasteLoop. Government service demonstration portal.</div></footer><script src="../js/main.js"></script><script src="../js/validation.js"></script><script src="../js/track.js"></script></body></html>
+  <nav class="primary-nav" id="primary-navigation" aria-label="Primary navigation">
+    <div class="container nav-list">
+      <a href="../index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="pickup.html">Request Pickup</a>
+      <a href="track.html">Track Collection</a>
+      <a href="waste-guide.html">Waste Guide</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="grievance.html">Grievance</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-label">Waste Management Services</p>
+      <h1>Live Garbage Collector Tracking</h1>
+      <p>Track your allocated collector vehicle in real time. Distance and estimated arrival time update automatically as the vehicle approaches your premises.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <form class="form-panel" id="track-form" novalidate>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="request-id">Pickup Request ID</label>
+            <input id="request-id" name="requestId" type="text" placeholder="Example: WL20491" autocomplete="off">
+            <span class="error-text"></span>
+          </div>
+          <div class="form-field">
+            <label for="track-hint">Or choose from your requests</label>
+            <div id="track-hint" class="hint-slot">
+              <span class="muted-text">Loading recent pickup requests…</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">Track Live Collection</button>
+          <button class="btn btn-secondary" id="track-live" type="button">Replay Simulation</button>
+        </div>
+        <div id="track-message" class="status-message" role="status"></div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Live tracking panel -->
+  <section class="section" id="track-panel" hidden>
+    <div class="container tracking-layout">
+
+      <!-- Simulated map -->
+      <div class="map-card">
+        <div class="map-head">
+          <h2>Collection Route — Simulated Map</h2>
+          <span class="map-tag">GPS not connected — simulated route</span>
+        </div>
+
+        <div class="map-stage" id="track-map">
+          <!-- Street grid drawn with CSS gradients -->
+          <div class="map-grid-lines" aria-hidden="true"></div>
+
+          <!-- Planned route -->
+          <svg class="map-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <polyline id="route-line" class="route-base" points="" />
+            <polyline id="trail-line" class="route-trail" points="" />
+          </svg>
+
+          <!-- Home / citizen marker -->
+          <div class="map-marker home-marker" id="home-marker">
+            <span class="marker-icon" aria-hidden="true">🏠</span>
+            <span class="marker-label">Your Home</span>
+          </div>
+
+          <!-- Collector vehicle marker -->
+          <div class="map-marker vehicle-marker" id="vehicle-marker">
+            <span class="marker-icon" aria-hidden="true">🚛</span>
+            <span class="marker-label">Collector</span>
+          </div>
+        </div>
+
+        <div class="map-progress">
+          <div class="progress-track"><div class="progress-fill" id="track-progress-bar"></div></div>
+          <span class="progress-text" id="track-progress-text">0% of journey completed</span>
+        </div>
+      </div>
+
+      <!-- Details -->
+      <div class="track-details">
+        <div class="detail-card">
+          <p class="section-label">Pickup Request</p>
+          <p class="detail-id" id="detail-id">—</p>
+          <span class="status-pill" id="detail-status">—</span>
+        </div>
+
+        <div class="detail-card">
+          <h3>Collector Details</h3>
+          <dl class="detail-list">
+            <dt>Collector Name</dt><dd id="detail-collector">—</dd>
+            <dt>Vehicle Number</dt><dd id="detail-vehicle">—</dd>
+            <dt>Collector Rating</dt><dd id="detail-rating">—</dd>
+          </dl>
+        </div>
+
+        <div class="detail-card">
+          <h3>Live Arrival Estimate</h3>
+          <dl class="detail-list">
+            <dt>Distance</dt><dd id="detail-distance">—</dd>
+            <dt>Estimated Arrival</dt><dd id="detail-eta">—</dd>
+            <dt>Waste</dt><dd id="detail-weight">—</dd>
+            <dt>Pickup Date</dt><dd id="detail-date">—</dd>
+            <dt>Address</dt><dd id="detail-address">—</dd>
+          </dl>
+        </div>
+
+        <div class="detail-card">
+          <h3>Status Flow</h3>
+          <ol class="timeline-list" id="track-steps">
+            <li>Collector Assigned</li>
+            <li>On the Way</li>
+            <li>Arriving</li>
+            <li>Collected</li>
+            <li>Completed</li>
+          </ol>
+        </div>
+
+        <div class="detail-card" id="certificate-actions"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent requests -->
+  <section class="section" id="track-lookup">
+    <div class="container">
+      <div class="section-heading">
+        <p class="section-label">Reference</p>
+        <h2>How tracking works</h2>
+      </div>
+      <div class="service-grid">
+        <article class="service-card">
+          <h3>Request a pickup</h3>
+          <p>Book a future collection date and you will receive a Pickup Request ID such as WL20491.</p>
+        </article>
+        <article class="service-card">
+          <h3>Collector is allotted</h3>
+          <p>The portal allots a municipal vehicle and the status becomes "Collector Assigned".</p>
+        </article>
+        <article class="service-card">
+          <h3>Watch the vehicle</h3>
+          <p>The vehicle moves along the sector route while distance and ETA count down to arrival.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <h2>WasteLoop</h2>
+      <p>Academic prototype of a citizen waste management portal. Not an official Government of India service.</p>
+    </div>
+    <div>
+      <h3>Important Links</h3>
+      <a href="contact.html">Contact</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms &amp; Conditions</a>
+      <a href="#">Accessibility</a>
+    </div>
+    <div>
+      <h3>Citizen Support</h3>
+      <p>Prototype Helpline: 1800-11-9001</p>
+      <p>support@wasteloop.example</p>
+    </div>
+  </div>
+  <div class="footer-bottom container">College project prototype — Government-style interface for academic demonstration only.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/validation.js"></script>
+<script src="../js/dates.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/track.js"></script>
+</body>
+</html>

@@ -1,10 +1,155 @@
-﻿<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Citizen Dashboard | WasteLoop</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/dashboard.css"></head><body><a class="skip-link" href="#main-content">Skip to main content</a>
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WasteLoop citizen dashboard — environmental impact, recycling totals, Green Points, certificates and pickup history.">
+  <title>Citizen Dashboard | WasteLoop</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/portal.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
 <header class="site-header">
-  <div class="govt-strip"><div class="container govt-strip-inner"><span>Government of India</span><span>Ministry of Environment, Forest and Climate Change</span></div></div>
+  <div class="govt-strip">
+    <div class="container govt-strip-inner">
+      <span>Government of India — Academic Prototype</span>
+      <span>Ministry of Environment, Forest and Climate Change (demonstration)</span>
+    </div>
+  </div>
   <div class="container brand-row">
-    <a class="brand" href="../index.html" aria-label="WasteLoop home"><img src="../assets/icons/wasteloop-logo.svg" alt="" class="brand-logo"><span><strong>WasteLoop</strong><small>National Waste Management & Recycling Portal</small></span></a>
-    <div class="header-actions"><span class="helpline">Helpline: 1800-11-9001</span><a class="login-link" href="login.html">Citizen Login</a></div>
+    <a class="brand" href="../index.html" aria-label="WasteLoop home">
+      <img src="../assets/icons/wasteloop-logo.svg" alt="" class="brand-logo">
+      <span>
+        <strong>WasteLoop</strong>
+        <small>National Waste Management &amp; Recycling Portal</small>
+      </span>
+    </a>
+    <div class="header-actions">
+      <span class="helpline">Helpline: 1800-11-9001</span>
+      <a class="login-link" href="login.html">Citizen Login</a>
+    </div>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">Menu</button>
   </div>
-  <nav class="primary-nav" id="primary-navigation" aria-label="Primary navigation"><div class="container nav-list"><a href="../index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="pickup.html">Request Pickup</a><a href="track.html">Track Request</a><a href="dashboard.html">Dashboard</a><a href="leaderboard.html">Leaderboard</a><a href="contact.html">Contact</a></div></nav>
-</header><main id="main-content"><section class="page-hero"><div class="container"><h1>Citizen Dashboard</h1><p>Sample citizen profile populated dynamically using local JavaScript objects.</p></div></section><section class="section"><div class="container"><div class="dashboard-toolbar"><div class="dashboard-summary"><p class="section-label">Current Progress</p><strong data-count="2480" id="dashboard-points">2,480</strong></div><button id="simulate-points" class="btn btn-primary" type="button">Add Green Points</button></div><div class="dashboard-grid" id="dashboard-cards"></div></div></section><section class="section section-muted"><div class="container"><div class="section-heading"><p class="section-label">Certificates</p><h2>Certificates Earned</h2></div><ul class="certificate-list" id="certificate-list"></ul></div></section><section class="section"><div class="container"><div class="section-heading"><p class="section-label">Recent Activity</p><h2>Pickup Timeline</h2></div><ul class="activity-list" id="activity-list"></ul></div></section></main><footer class="site-footer"><div class="container footer-grid"><div><h2>WasteLoop</h2><p>Official Government of India waste management and recycling service portal.</p></div><div><h3>Important Links</h3><a href="contact.html">Contact</a><a href="#">Privacy Policy</a><a href="#">Terms & Conditions</a><a href="#">Accessibility</a></div><div><h3>Citizen Support</h3><p>Helpline: 1800-11-9001</p><p>Email: support@wasteloop.gov.in</p></div></div><div class="footer-bottom">Copyright 2026 WasteLoop. Government service demonstration portal.</div></footer><script src="../js/main.js"></script><script src="../js/dashboard.js"></script></body></html>
+  <nav class="primary-nav" id="primary-navigation" aria-label="Primary navigation">
+    <div class="container nav-list">
+      <a href="../index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="pickup.html">Request Pickup</a>
+      <a href="track.html">Track Collection</a>
+      <a href="waste-guide.html">Waste Guide</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="grievance.html">Grievance</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-label">Citizen Services</p>
+      <h1>Citizen Dashboard</h1>
+      <p>Your recycling contribution, Green Points balance and environmental impact. Every figure below is calculated from the pickup records stored by the portal.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="dashboard-toolbar">
+        <div class="dashboard-summary">
+          <p class="section-label">Green Points Balance</p>
+          <strong data-count="0" id="dashboard-points">0</strong>
+        </div>
+        <button id="simulate-points" class="btn btn-primary" type="button">Refresh Impact Data</button>
+      </div>
+      <div id="dashboard-message" class="status-message" role="status"></div>
+      <div class="dashboard-grid" id="dashboard-cards"></div>
+    </div>
+  </section>
+
+  <!-- Feature 3: Environmental Impact -->
+  <section class="section section-muted">
+    <div class="container">
+      <div class="section-heading">
+        <p class="section-label">Environmental Impact</p>
+        <h2>Your Environmental Impact</h2>
+      </div>
+
+      <div class="impact-grid" id="impact-grid"></div>
+
+      <p class="impact-note" id="impact-methodology" style="margin-top:22px"></p>
+
+      <div class="table-wrap breakdown-table">
+        <table>
+          <caption class="sr-only">Waste recycled by category</caption>
+          <thead>
+            <tr>
+              <th scope="col">Waste Category</th>
+              <th scope="col">Weight Recycled</th>
+              <th scope="col">CO2 Factor</th>
+              <th scope="col">CO2 Saved</th>
+            </tr>
+          </thead>
+          <tbody id="breakdown-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certificates -->
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="section-label">Digital Certificate</p>
+        <h2>Certificates Earned</h2>
+      </div>
+      <ul class="certificate-list" id="certificate-list"></ul>
+    </div>
+  </section>
+
+  <!-- Recent activity -->
+  <section class="section section-muted">
+    <div class="container">
+      <div class="section-heading">
+        <p class="section-label">Waste Management Services</p>
+        <h2>Recent Pickup Activity</h2>
+      </div>
+      <ul class="activity-list" id="activity-list"></ul>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <h2>WasteLoop</h2>
+      <p>Academic prototype of a citizen waste management portal. Not an official Government of India service.</p>
+    </div>
+    <div>
+      <h3>Important Links</h3>
+      <a href="contact.html">Contact</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms &amp; Conditions</a>
+      <a href="#">Accessibility</a>
+    </div>
+    <div>
+      <h3>Citizen Support</h3>
+      <p>Prototype Helpline: 1800-11-9001</p>
+      <p>support@wasteloop.example</p>
+    </div>
+  </div>
+  <div class="footer-bottom container">College project prototype — Government-style interface for academic demonstration only.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/dates.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/dashboard.js"></script>
+</body>
+</html>

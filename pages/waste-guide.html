@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Smart Waste Disposal Guide — search any waste item to learn its waste type, recycling status, correct disposal method and green points.">
+  <title>Smart Waste Disposal Guide | WasteLoop</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/forms.css">
+  <link rel="stylesheet" href="../css/portal.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header class="site-header">
+  <div class="govt-strip">
+    <div class="container govt-strip-inner">
+      <span>Government of India — Academic Prototype</span>
+      <span>Ministry of Environment, Forest and Climate Change (demonstration)</span>
+    </div>
+  </div>
+  <div class="container brand-row">
+    <a class="brand" href="../index.html" aria-label="WasteLoop home">
+      <img src="../assets/icons/wasteloop-logo.svg" alt="" class="brand-logo">
+      <span>
+        <strong>WasteLoop</strong>
+        <small>National Waste Management &amp; Recycling Portal</small>
+      </span>
+    </a>
+    <div class="header-actions">
+      <span class="helpline">Helpline: 1800-11-9001</span>
+      <a class="login-link" href="login.html">Citizen Login</a>
+    </div>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">Menu</button>
+  </div>
+  <nav class="primary-nav" id="primary-navigation" aria-label="Primary navigation">
+    <div class="container nav-list">
+      <a href="../index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="pickup.html">Request Pickup</a>
+      <a href="track.html">Track Collection</a>
+      <a href="waste-guide.html">Waste Guide</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="grievance.html">Grievance</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-label">Citizen Services</p>
+      <h1>Smart Waste Disposal Guide</h1>
+      <p>Not sure how to dispose of something? Search the item name to find its waste category, whether it is recyclable, the correct disposal action and the Green Points you earn.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="guide-search-panel">
+        <form id="guide-form" novalidate>
+          <div class="guide-search-row">
+            <div class="form-field">
+              <label for="guide-query">What do you want to dispose?</label>
+              <input id="guide-query" name="query" type="search" autocomplete="off"
+                     placeholder="e.g. Old Mobile Phone, Plastic bottle, Newspaper, Battery">
+            </div>
+            <button class="btn btn-primary" type="submit">Search</button>
+          </div>
+        </form>
+
+        <div class="guide-chip-row" id="guide-chips" aria-label="Example searches"></div>
+
+        <div class="status-message" id="guide-message" role="status"></div>
+
+        <div class="guide-result" id="guide-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-muted">
+    <div class="container">
+      <div class="section-heading">
+        <p class="section-label">Reference</p>
+        <h2>All Disposal Entries</h2>
+      </div>
+      <div class="content-grid">
+        <article class="info-card">
+          <h3>Waste Categories</h3>
+          <ul class="certificate-list" id="guide-list"></ul>
+        </article>
+        <article class="info-card">
+          <h3>Why segregate at source?</h3>
+          <p>Wet, dry, hazardous and e-waste streams that are mixed together cannot be recycled — they end up in landfill. Segregating at home keeps recyclables clean and protects waste workers.</p>
+        </article>
+        <article class="info-card">
+          <h3>Green Points</h3>
+          <p>Every completed pickup credits Green Points based on the waste category. Points are awarded automatically by the portal when a collector marks your request Completed.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <h2>WasteLoop</h2>
+      <p>Academic prototype of a citizen waste management portal. Not an official Government of India service.</p>
+    </div>
+    <div>
+      <h3>Important Links</h3>
+      <a href="contact.html">Contact</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms &amp; Conditions</a>
+      <a href="#">Accessibility</a>
+    </div>
+    <div>
+      <h3>Citizen Support</h3>
+      <p>Prototype Helpline: 1800-11-9001</p>
+      <p>support@wasteloop.example</p>
+    </div>
+  </div>
+  <div class="footer-bottom container">College project prototype — Government-style interface for academic demonstration only.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/validation.js"></script>
+<script src="../js/dates.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/waste-guide.js"></script>
+</body>
+</html>

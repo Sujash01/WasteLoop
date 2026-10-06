@@ -25,6 +25,7 @@
     if (error) {
       error.textContent = message;
     }
+    return field;
   }
 
   function clearError(field) {
@@ -38,8 +39,20 @@
     }
   }
 
+  /** Public helper: report a server side error against one input. */
+  function showFieldError(field, message) {
+    return showError(field, message);
+  }
+
+  /**
+   * Validate every rule and return { valid, firstInvalid }.
+   * A rule may carry a `validate(value)` function returning either
+   * true, or a string message to display — used for the pickup date policy.
+   */
   function validateRequired(form, rules) {
     var valid = true;
+    var firstInvalid = null;
+
     rules.forEach(function (rule) {
       var field = form.elements[rule.name];
       var value = getValue(form, rule.name);
@@ -48,32 +61,45 @@
       }
       clearError(field);
       if (!value) {
-        showError(field, rule.label + ' is required.');
+        firstInvalid = firstInvalid || showError(field, rule.label + ' is required.');
         valid = false;
         return;
       }
       if (rule.type === 'email' && !isEmail(value)) {
-        showError(field, 'Enter a valid email address.');
+        firstInvalid = firstInvalid || showError(field, 'Enter a valid email address.');
         valid = false;
       }
       if (rule.type === 'mobile' && !isMobile(value)) {
-        showError(field, 'Enter a valid 10 digit Indian mobile number.');
+        firstInvalid = firstInvalid || showError(field, 'Enter a valid 10 digit Indian mobile number.');
         valid = false;
       }
       if (rule.type === 'pincode' && !isPincode(value)) {
-        showError(field, 'Enter a valid 6 digit pincode.');
+        firstInvalid = firstInvalid || showError(field, 'Enter a valid 6 digit pincode.');
         valid = false;
       }
       if (rule.minLength && value.length < rule.minLength) {
-        showError(field, rule.label + ' must be at least ' + rule.minLength + ' characters.');
+        firstInvalid = firstInvalid || showError(field, rule.label + ' must be at least ' + rule.minLength + ' characters.');
         valid = false;
       }
       if (rule.minNumber && Number(value) < rule.minNumber) {
-        showError(field, rule.label + ' must be at least ' + rule.minNumber + '.');
+        firstInvalid = firstInvalid || showError(field, rule.label + ' must be at least ' + rule.minNumber + '.');
         valid = false;
       }
+      if (rule.maxNumber && Number(value) > rule.maxNumber) {
+        firstInvalid = firstInvalid || showError(field, rule.label + ' must be ' + rule.maxNumber + ' or less.');
+        valid = false;
+      }
+      // Custom rule — the last word on validity for this field.
+      if (rule.validate) {
+        var outcome = rule.validate(value);
+        if (outcome !== true) {
+          firstInvalid = firstInvalid || showError(field, String(outcome));
+          valid = false;
+        }
+      }
     });
-    return valid;
+
+    return { valid: valid, firstInvalid: firstInvalid };
   }
 
   function setMessage(target, text, type) {
@@ -90,6 +116,7 @@
 
   return {
     validateRequired: validateRequired,
+    showFieldError: showFieldError,
     setMessage: setMessage,
     clearFormErrors: clearFormErrors,
     isEmail: isEmail
