@@ -144,7 +144,18 @@ var WasteLoopDates = (function () {
   function fetchMinimumDate() {
     if (typeof fetch !== 'function') return Promise.resolve(tomorrowIso());
     var offset = new Date().getTimezoneOffset();
-    return fetch('/api/meta?tz=' + encodeURIComponent(offset))
+    var apiBase = '';
+    if (typeof WasteLoopApi !== 'undefined' && WasteLoopApi.getBaseUrl) {
+      apiBase = WasteLoopApi.getBaseUrl();
+    } else if (typeof window !== 'undefined' && window.WASTELOOP_API_BASE) {
+      apiBase = window.WASTELOOP_API_BASE.replace(/\/+$/, '');
+    } else if (typeof window !== 'undefined' && window.location) {
+      var port = window.location.port;
+      if (window.location.protocol === 'file:' || (port && port !== '3000')) {
+        apiBase = 'http://127.0.0.1:3000';
+      }
+    }
+    return fetch(apiBase + '/api/meta?tz=' + encodeURIComponent(offset))
       .then(function (response) {
         return response.ok ? response.json() : Promise.reject(new Error('meta unavailable'));
       })

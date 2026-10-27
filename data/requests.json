@@ -374,5 +374,57 @@
     "seeded": true,
     "createdAt": "2026-10-06T05:19:14.444Z",
     "updatedAt": "2026-10-06T05:19:14.444Z"
+  },
+  {
+    "id": "WL73667",
+    "citizenName": "Sujash Mittal",
+    "mobile": "7973519714",
+    "email": "sujashmittal62@gmail.com",
+    "address": "panchkula",
+    "city": "Panchkula",
+    "pincode": "134109",
+    "wasteCategory": "Dry Waste",
+    "weight": 4,
+    "pickupDate": "2026-10-28",
+    "remarks": "",
+    "status": "Arriving",
+    "statusHistory": [
+      {
+        "status": "Pending",
+        "at": "2026-10-27T04:39:57.368Z"
+      },
+      {
+        "status": "Collector Assigned",
+        "at": "2026-10-27T04:39:57.416Z"
+      },
+      {
+        "status": "Collector Assigned",
+        "at": "2026-10-27T04:39:58.282Z"
+      },
+      {
+        "status": "On the Way",
+        "at": "2026-10-27T04:40:16.680Z"
+      },
+      {
+        "status": "On the Way",
+        "at": "2026-10-27T04:40:50.677Z"
+      },
+      {
+        "status": "Arriving",
+        "at": "2026-10-27T04:41:38.679Z"
+      }
+    ],
+    "collector": {
+      "name": "Manpreet Singh",
+      "vehicle": "PB10 EF 9012",
+      "rating": 4.7,
+      "phone": "98765-43212",
+      "zone": "Ludhiana East"
+    },
+    "distanceKm": 3.3,
+    "etaMinutes": 15,
+    "certificateId": null,
+    "createdAt": "2026-10-27T04:39:57.368Z",
+    "updatedAt": "2026-10-27T04:41:38.679Z"
   }
 ]

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -7,6 +7,9 @@
   <title>Request Pickup | WasteLoop</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/forms.css">
+  <link rel="stylesheet" href="../css/portal.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="../assets/leaflet/leaflet.css">
 </head>
 <body>
 
@@ -133,9 +136,24 @@
     </div>
   </section>
 
+  <!-- Real Live Tracking Map (Always Visible & Interactive) -->
+  <section class="section" id="pickup-fleet-section" style="padding-top: 10px;">
+    <div class="container">
+      <div class="section-heading">
+        <p class="section-label">Real-Time Fleet Operations</p>
+        <h2>Live Municipal Garbage Collector Map</h2>
+        <p class="section-lead" style="color:var(--text-sec); margin:6px 0 18px; max-width:760px;">
+          Interactive GPS route powered by OpenStreetMap API. When you submit a pickup request, your assigned collector will immediately be tracked en route to your premises.
+        </p>
+      </div>
+      <div id="pickup-live-map-wrapper"></div>
+    </div>
+  </section>
+
+  <!-- Confirmation Receipt -->
   <section class="section" id="pickup-receipt-section" hidden>
     <div class="container">
-      <div class="receipt-panel" id="pickup-receipt" hidden></div>
+      <div class="receipt-panel" id="pickup-receipt"></div>
     </div>
   </section>
 </main>
@@ -166,6 +184,9 @@
 <script src="../js/validation.js"></script>
 <script src="../js/dates.js"></script>
 <script src="../js/api.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="../assets/leaflet/leaflet.js"></script>
+<script src="../js/live-tracker.js"></script>
 <script src="../js/pickup.js"></script>
 </body>
 </html>

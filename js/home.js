@@ -55,4 +55,68 @@
   }
 
   loadStats();
+
+  /* -------------------------------------------------------------
+     Live Tracking Map Showcase initialization
+     ------------------------------------------------------------- */
+  var trackMount = document.getElementById('home-tracking-mount');
+  var trackInput = document.getElementById('home-track-input');
+  var trackBtn = document.getElementById('home-track-btn');
+  var trackerInstance = null;
+
+  async function initLiveTracker(pickupId) {
+    if (!trackMount || typeof WasteLoopLiveTracker === 'undefined') return;
+
+    if (trackerInstance) {
+      trackerInstance.destroy();
+      trackerInstance = null;
+    }
+
+    var pickup = null;
+    if (pickupId && pickupId !== 'demo') {
+      try {
+        var res = await WasteLoopApi.getPickup(pickupId);
+        if (res && res.pickup) pickup = res.pickup;
+      } catch (e) {
+        console.warn('Could not load pickup ' + pickupId, e);
+      }
+    }
+
+    if (!pickup) {
+      try {
+        var listRes = await WasteLoopApi.listPickups('limit=10');
+        if (listRes && listRes.pickups && listRes.pickups.length) {
+          pickup = listRes.pickups.find(function (p) { return p.status !== 'Completed'; }) || listRes.pickups[0];
+        }
+      } catch (e) {}
+    }
+
+    trackerInstance = WasteLoopLiveTracker.mount(trackMount, pickup, {
+      isSubpage: false,
+      autoStart: true
+    });
+  }
+
+  if (trackBtn && trackInput) {
+    trackBtn.addEventListener('click', function () {
+      var val = trackInput.value.trim().toUpperCase();
+      if (val) initLiveTracker(val);
+    });
+    trackInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        var val = trackInput.value.trim().toUpperCase();
+        if (val) initLiveTracker(val);
+      }
+    });
+  }
+
+  document.querySelectorAll('.chip-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var id = btn.getAttribute('data-id');
+      if (trackInput && id !== 'demo') trackInput.value = id;
+      initLiveTracker(id);
+    });
+  });
+
+  initLiveTracker();
 })();

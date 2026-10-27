@@ -40,13 +40,21 @@ const MIME_TYPES = {
   '.webmanifest': 'application/manifest+json'
 };
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Accept, Authorization, X-Requested-With',
+  'Access-Control-Max-Age': '86400'
+};
+
 /** Send a JSON response. */
 function sendJson(res, statusCode, payload) {
   const body = JSON.stringify(payload, null, 2);
   res.writeHead(statusCode, {
     'Content-Type': 'application/json; charset=utf-8',
     'Content-Length': Buffer.byteLength(body),
-    'Cache-Control': 'no-store'
+    'Cache-Control': 'no-store',
+    ...CORS_HEADERS
   });
   res.end(body);
 }
@@ -119,7 +127,8 @@ async function serveStatic(req, res, pathname) {
   res.writeHead(200, {
     'Content-Type': MIME_TYPES[extension] || 'application/octet-stream',
     'Content-Length': stats.size,
-    'Cache-Control': 'no-cache'
+    'Cache-Control': 'no-cache',
+    ...CORS_HEADERS
   });
   fs.createReadStream(target).pipe(res);
 }
@@ -155,6 +164,12 @@ async function handleApi(req, res, url) {
 }
 
 const server = http.createServer((req, res) => {
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, CORS_HEADERS);
+    res.end();
+    return;
+  }
+
   const url = new URL(req.url, `http://${req.headers.host || HOST + ':' + PORT}`);
 
   if (url.pathname.startsWith('/api/')) {

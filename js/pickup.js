@@ -163,11 +163,23 @@
     receipt.appendChild(actions);
     receipt.hidden = false;
 
-    // Reveal the surrounding section too.
+    // Reveal the receipt section
     var section = document.getElementById('pickup-receipt-section');
     if (section) {
       section.hidden = false;
       section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Update live tracking map with citizen's confirmed booking
+    var liveMapWrapper = document.getElementById('pickup-live-map-wrapper');
+    if (liveMapWrapper && typeof WasteLoopLiveTracker !== 'undefined') {
+      if (pickupTrackerInstance) {
+        pickupTrackerInstance.destroy();
+      }
+      pickupTrackerInstance = WasteLoopLiveTracker.mount(liveMapWrapper, pickup, {
+        isSubpage: true,
+        autoStart: true
+      });
     }
   }
 
@@ -230,4 +242,14 @@
       submitButton.textContent = 'Submit Request';
     }
   });
+
+  // Mount the Live Map immediately on page load so it is live right away!
+  var liveMapWrapper = document.getElementById('pickup-live-map-wrapper');
+  var pickupTrackerInstance = null;
+  if (liveMapWrapper && typeof WasteLoopLiveTracker !== 'undefined') {
+    pickupTrackerInstance = WasteLoopLiveTracker.mount(liveMapWrapper, null, {
+      isSubpage: true,
+      autoStart: true
+    });
+  }
 })();

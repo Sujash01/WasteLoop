@@ -1,48 +1,31 @@
-﻿/**
- * WasteLoop — Feature 1: Live Garbage Collector Tracking
+/**
+ * WasteLoop — Feature 1: Live Garbage Collector Tracking (Leaflet.js + OpenStreetMap API)
  *
- * An "Uber style" simulated tracking view built with plain DOM manipulation.
- * There is no Google Maps API and no real GPS: the collector vehicle follows a
- * predefined route of { x, y } points (percentages of the map box) and the
- * marker is moved with setInterval().
- *
- * While the vehicle moves:
- *   - the remaining distance decreases
- *   - the ETA decreases
- *   - the status advances through the official flow
- *   - each new status is written back to the Node.js backend
- *
- * Demonstrates: arrays, objects, map(), filter(), find(), reduce(), sort(),
- * setInterval(), clearInterval(), setTimeout(), callbacks, Promises,
- * async/await, try/catch, JSON, fetch(), addEventListener().
+ * Real map tiles, real GPS coordinates, zoom/pan controls, animated vehicle marker,
+ * live approach telemetry, and status progression.
  */
 
 (function () {
-  /* ------------------------------------------------------------------
-     THE SIMULATED MAP
-     A route is a list of waypoints expressed as percentages of the map
-     box, so it scales to any screen size. The citizen home is always the
-     final waypoint.
-     ------------------------------------------------------------------ */
-  var ROUTE = [
-    { x: 8, y: 86 },
-    { x: 20, y: 78 },
-    { x: 34, y: 70 },
-    { x: 48, y: 62 },
-    { x: 62, y: 52 },
-    { x: 74, y: 42 },
-    { x: 84, y: 32 },
-    { x: 91, y: 24 }
+  'use strict';
+
+  var GPS_WAYPOINTS = [
+    [30.8935, 75.8230], // Municipal Waste Recovery Transfer Station
+    [30.8962, 75.8295], // Ferozepur Road Junction
+    [30.8995, 75.8360], // Bharat Nagar Chowk
+    [30.9025, 75.8450], // Aarti Chowk
+    [30.9058, 75.8520], // Ghumar Mandi Crossing
+    [30.9088, 75.8585], // Club Road
+    [30.9055, 75.8635], // Model Town Market
+    [30.9020, 75.8670], // Gol Market Circle
+    [30.8995, 75.8690]  // Citizen Designated Premises
   ];
 
-  var HOME = { x: 93, y: 20 };
+  var DEPOT_COORDS = GPS_WAYPOINTS[0];
+  var HOME_COORDS = GPS_WAYPOINTS[GPS_WAYPOINTS.length - 1];
 
-  // Simulation speed: how many milliseconds one movement step takes.
-  var TICK_MS = 900;
-  // How many steps the vehicle takes to reach the home marker.
+  var TICK_MS = 850;
   var TOTAL_STEPS = 120;
 
-  /* Status thresholds, expressed as a percentage of the journey completed. */
   var STATUS_FLOW = [
     'Collector Assigned',
     'On the Way',
@@ -59,10 +42,6 @@
     lookup: document.getElementById('track-lookup'),
     panel: document.getElementById('track-panel'),
     map: document.getElementById('track-map'),
-    vehicle: document.getElementById('vehicle-marker'),
-    home: document.getElementById('home-marker'),
-    routeSvg: document.getElementById('route-line'),
-    trailSvg: document.getElementById('trail-line'),
     id: document.getElementById('detail-id'),
     status: document.getElementById('detail-status'),
     collector: document.getElementById('detail-collector'),
@@ -83,100 +62,73 @@
     pickup: null,
     timer: null,
     step: 0,
-    trail: [],
+    coveredPath: [],
     statusIndex: -1,
-    savedStatuses: []
+    savedStatuses: [],
+    leafletMap: null,
+    vehicleMarker: null,
+    trailPolyline: null
   };
-
-  /* ------------------------------------------------------------------
-     Small helpers
-     ------------------------------------------------------------------ */
 
   function round(value, places) {
     var factor = Math.pow(10, places || 1);
     return Math.round(value * factor) / factor;
   }
 
-  /** Total length of the route in map units (used to normalise progress). */
-  var routeLength = ROUTE.reduce(function (total, point, index) {
-    if (index === 0) return total;
-    var previous = ROUTE[index - 1];
-    var dx = point.x - previous.x;
-    var dy = point.y - previous.y;
-    return total + Math.sqrt(dx * dx + dy * dy);
-  }, 0);
+  function distanceBetween(c1, c2) {
+    var R = 6371;
+    var dLat = (c2[0] - c1[0]) * Math.PI / 180;
+    var dLng = (c2[1] - c1[1]) * Math.PI / 180;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(c1[0] * Math.PI / 180) * Math.cos(c2[0] * Math.PI / 180) *
+            Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
 
-  /**
-   * Position after `step` of TOTAL_STEPS.
-   * Uses map(), reduce() and Math.round to walk the polyline — an easy
-   * piece of code to explain.
-   */
-  function pointAtProgress(progress) {
-    var target = progress * routeLength;
-    var walked = 0;
+  var segmentDistances = [];
+  var totalRouteKm = 0;
+  for (var i = 0; i < GPS_WAYPOINTS.length - 1; i++) {
+    var d = distanceBetween(GPS_WAYPOINTS[i], GPS_WAYPOINTS[i + 1]);
+    segmentDistances.push(d);
+    totalRouteKm += d;
+  }
 
-    var segments = ROUTE.map(function (point, index) {
-      if (index === 0) return { from: point, to: point, length: 0 };
-      var previous = ROUTE[index - 1];
-      var dx = point.x - previous.x;
-      var dy = point.y - previous.y;
-      return { from: previous, to: point, length: Math.sqrt(dx * dx + dy * dy) };
-    });
+  function coordAtProgress(progress) {
+    if (progress <= 0) return GPS_WAYPOINTS[0];
+    if (progress >= 1) return GPS_WAYPOINTS[GPS_WAYPOINTS.length - 1];
 
-    var segment = segments.filter(function (candidate) {
-      if (candidate.length === 0) return false;
-      return target <= walked + candidate.length;
-    })[0];
+    var targetDist = progress * totalRouteKm;
+    var accumulated = 0;
 
-    if (!segment) {
-      var last = ROUTE[ROUTE.length - 1];
-      return { x: last.x, y: last.y };
+    for (var j = 0; j < segmentDistances.length; j++) {
+      var segLen = segmentDistances[j];
+      if (accumulated + segLen >= targetDist) {
+        var ratio = segLen === 0 ? 0 : (targetDist - accumulated) / segLen;
+        var p1 = GPS_WAYPOINTS[j];
+        var p2 = GPS_WAYPOINTS[j + 1];
+        return [
+          p1[0] + (p2[0] - p1[0]) * ratio,
+          p1[1] + (p2[1] - p1[1]) * ratio
+        ];
+      }
+      accumulated += segLen;
     }
-
-    if (segment.length === 0) return { x: segment.from.x, y: segment.from.y };
-
-    var covered = target - walked;
-    var ratio = segment.length === 0 ? 0 : covered / segment.length;
-    return {
-      x: segment.from.x + (segment.to.x - segment.from.x) * ratio,
-      y: segment.from.y + (segment.to.y - segment.from.y) * ratio
-    };
+    return GPS_WAYPOINTS[GPS_WAYPOINTS.length - 1];
   }
 
   function progressPercent() {
     return Math.min(100, (state.step / TOTAL_STEPS) * 100);
   }
 
-  /* ------------------------------------------------------------------
-     Painting the map
-     ------------------------------------------------------------------ */
-
-  function placeMarker(element, point) {
-    if (!element) return;
-    element.style.left = point.x + '%';
-    element.style.top = point.y + '%';
+  function remainingDistance() {
+    var total = Number(state.pickup ? state.pickup.distanceKm : 0) || totalRouteKm;
+    return round(total * (1 - progressPercent() / 100), 1);
   }
 
-  function drawStaticRoute() {
-    if (!els.routeSvg) return;
-    var points = ROUTE.concat([HOME]).map(function (point) {
-      return point.x + ',' + point.y;
-    });
-    // viewBox is 0 0 100 100 with preserveAspectRatio="none", so the
-    // percentage coordinates can be written straight into the polyline.
-    els.routeSvg.setAttribute('points', points.join(' '));
-  }
-
-  function drawTrail() {
-    if (!els.trailSvg) return;
-    var last = state.trail[state.trail.length - 1];
-    if (!last) return;
-    var points = state.trail
-      .concat([last])
-      .map(function (point) {
-        return point.x + ',' + point.y;
-      });
-    els.trailSvg.setAttribute('points', points.join(' '));
+  function remainingEta() {
+    var total = Number(state.pickup ? state.pickup.etaMinutes : 0) || 16;
+    return Math.max(0, Math.round(total * (1 - progressPercent() / 100)));
   }
 
   function renderTimeline(statusName) {
@@ -187,12 +139,30 @@
     });
   }
 
-  /* ------------------------------------------------------------------
-     Rendering the detail panel
-     ------------------------------------------------------------------ */
-
   function setText(element, value) {
     if (element) element.textContent = value;
+  }
+
+  function renderLiveValues(statusName) {
+    setText(els.distance, remainingDistance() + ' km');
+    setText(els.eta, remainingEta() + ' minutes');
+    setText(els.status, statusName);
+
+    var percent = Math.round(progressPercent());
+    if (els.progressBar) els.progressBar.style.width = percent + '%';
+    if (els.progressText) els.progressText.textContent = percent + '% of journey completed';
+  }
+
+  function statusForProgress() {
+    var percent = progressPercent();
+    var best = 0;
+    Object.keys(STATUS_AT_PROGRESS)
+      .map(Number)
+      .sort(function (a, b) { return a - b; })
+      .forEach(function (threshold) {
+        if (percent >= threshold) best = STATUS_AT_PROGRESS[threshold];
+      });
+    return STATUS_FLOW[best];
   }
 
   function renderDetails() {
@@ -208,56 +178,14 @@
     setText(els.weight, pickup.weight + ' kg · ' + pickup.wasteCategory);
     setText(els.pickupDate, WasteLoopDates.formatLongDate(pickup.pickupDate));
 
-    if (pickup.address) {
-      setText(document.getElementById('detail-address'), pickup.address);
+    var addrEl = document.getElementById('detail-address');
+    if (addrEl && pickup.address) {
+      setText(addrEl, pickup.address);
     }
-
-    placeMarker(els.home, HOME);
   }
-
-  /** Distance shrinks as the vehicle closes in on the home marker. */
-  function remainingDistance() {
-    var total = Number(state.pickup.distanceKm) || 1.8;
-    return round(total * (1 - progressPercent() / 100), 1);
-  }
-
-  /** ETA shrinks proportionally, never below zero. */
-  function remainingEta() {
-    var total = Number(state.pickup.etaMinutes) || 8;
-    return Math.max(0, Math.round(total * (1 - progressPercent() / 100)));
-  }
-
-  function renderLiveValues(statusName) {
-    setText(els.distance, remainingDistance() + ' km');
-    setText(els.eta, remainingEta() + ' minutes');
-    setText(els.status, statusName);
-
-    var percent = Math.round(progressPercent());
-    if (els.progressBar) els.progressBar.style.width = percent + '%';
-    if (els.progressText) els.progressText.textContent = percent + '% of journey completed';
-  }
-
-  /** Which status belongs to the current progress percentage? */
-  function statusForProgress() {
-    var percent = progressPercent();
-    var best = 0;
-    Object.keys(STATUS_AT_PROGRESS)
-      .map(Number)
-      .sort(function (a, b) { return a - b; })
-      .forEach(function (threshold) {
-        if (percent >= threshold) best = STATUS_AT_PROGRESS[threshold];
-      });
-    return STATUS_FLOW[best];
-  }
-
-  /* ------------------------------------------------------------------
-     Persisting a status change to the backend
-     ------------------------------------------------------------------ */
 
   function saveStatus(statusName) {
     if (!state.pickup) return Promise.resolve(null);
-
-    // Do not send the same status twice.
     if (state.savedStatuses.indexOf(statusName) !== -1) return Promise.resolve(null);
     state.savedStatuses.push(statusName);
 
@@ -272,10 +200,6 @@
         return null;
       });
   }
-
-  /* ------------------------------------------------------------------
-     Certificate — only offered once the pickup is Completed
-     ------------------------------------------------------------------ */
 
   function renderCertificateAction() {
     if (!els.certificateBox) return;
@@ -314,7 +238,7 @@
         var data = await WasteLoopApi.createCertificate(pickup.id);
         window.location.href = 'certificate.html?id=' + encodeURIComponent(data.certificate.id);
       } catch (error) {
-        WasteLoopValidation.setMessage(message, error.message, 'error');
+        WasteLoopValidation.setMessage(els.message, error.message, 'error');
         generate.disabled = false;
         generate.textContent = 'Generate Certificate';
       }
@@ -323,9 +247,79 @@
     els.certificateBox.appendChild(generate);
   }
 
-  /* ------------------------------------------------------------------
-     The animation loop
-     ------------------------------------------------------------------ */
+  function initMap() {
+    if (state.leafletMap || typeof L === 'undefined') return;
+    var mapEl = document.getElementById('track-map');
+    if (!mapEl) return;
+
+    try {
+      state.leafletMap = L.map('track-map', {
+        zoomControl: true,
+        scrollWheelZoom: false
+      });
+
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
+      }).addTo(state.leafletMap);
+
+      var vehicleIcon = L.divIcon({
+        className: 'leaflet-vehicle-icon',
+        html: '<div class="leaflet-vehicle-inner">🚛<span class="leaflet-marker-label">Collector</span></div>',
+        iconSize: [44, 44],
+        iconAnchor: [22, 22]
+      });
+
+      var homeIcon = L.divIcon({
+        className: 'leaflet-home-icon',
+        html: '<div class="leaflet-home-inner">🏠<span class="leaflet-marker-label">Citizen Address</span></div>',
+        iconSize: [40, 40],
+        iconAnchor: [20, 20]
+      });
+
+      var depotIcon = L.divIcon({
+        className: 'leaflet-depot-icon',
+        html: '<div class="leaflet-depot-inner">♻️<span class="leaflet-marker-label">Depot</span></div>',
+        iconSize: [36, 36],
+        iconAnchor: [18, 18]
+      });
+
+      L.marker(DEPOT_COORDS, { icon: depotIcon })
+        .addTo(state.leafletMap)
+        .bindPopup('<b>Municipal Solid Waste Recovery Depot</b>');
+
+      L.marker(HOME_COORDS, { icon: homeIcon })
+        .addTo(state.leafletMap)
+        .bindPopup('<b>Citizen Premises</b>');
+
+      state.vehicleMarker = L.marker(GPS_WAYPOINTS[0], { icon: vehicleIcon })
+        .addTo(state.leafletMap);
+
+      L.polyline(GPS_WAYPOINTS, {
+        color: '#2563eb',
+        weight: 4,
+        opacity: 0.55,
+        dashArray: '8, 8'
+      }).addTo(state.leafletMap);
+
+      state.trailPolyline = L.polyline([GPS_WAYPOINTS[0]], {
+        color: '#16a34a',
+        weight: 5,
+        opacity: 0.95
+      }).addTo(state.leafletMap);
+
+      state.leafletMap.fitBounds(L.latLngBounds(GPS_WAYPOINTS), {
+        padding: [30, 30]
+      });
+
+      setTimeout(function () {
+        if (state.leafletMap) state.leafletMap.invalidateSize();
+      }, 300);
+
+    } catch (e) {
+      console.error('Leaflet map initialization failed:', e);
+    }
+  }
 
   function finish() {
     if (state.timer) {
@@ -333,22 +327,21 @@
       state.timer = null;
     }
 
-    var point = pointAtProgress(1);
-    placeMarker(els.vehicle, point);
-    state.trail.push(point);
-    drawTrail();
+    var finalCoord = GPS_WAYPOINTS[GPS_WAYPOINTS.length - 1];
+    if (state.vehicleMarker) state.vehicleMarker.setLatLng(finalCoord);
+
+    state.coveredPath.push(finalCoord);
+    if (state.trailPolyline) state.trailPolyline.setLatLngs(state.coveredPath);
 
     renderLiveValues('Completed');
     renderTimeline('Completed');
-    if (els.vehicle) els.vehicle.classList.add('arrived');
 
-    // Short setTimeout before the final write so the arrival is visible.
     setTimeout(async function () {
       await saveStatus('Completed');
       state.pickup.status = 'Completed';
       renderCertificateAction();
       WasteLoopValidation.setMessage(
-        message,
+        els.message,
         'Pickup ' + state.pickup.id + ' completed. A digital recycling certificate is now available.',
         'success'
       );
@@ -357,12 +350,13 @@
 
   function tick() {
     state.step += 1;
+    var progress = progressPercent() / 100;
+    var coord = coordAtProgress(progress);
 
-    var progress = progressPercent();
-    var point = pointAtProgress(progress / 100);
-    placeMarker(els.vehicle, point);
-    state.trail.push(point);
-    drawTrail();
+    if (state.vehicleMarker) state.vehicleMarker.setLatLng(coord);
+
+    state.coveredPath.push(coord);
+    if (state.trailPolyline) state.trailPolyline.setLatLngs(state.coveredPath);
 
     var statusName = statusForProgress();
     renderLiveValues(statusName);
@@ -380,27 +374,18 @@
     if (state.timer) clearInterval(state.timer);
 
     state.step = 0;
-    state.trail = [];
+    state.coveredPath = [GPS_WAYPOINTS[0]];
     state.statusIndex = -1;
     state.savedStatuses = [];
 
-    var start = pointAtProgress(0);
-    placeMarker(els.vehicle, start);
-    drawStaticRoute();
-    drawTrail();
-
-    if (els.vehicle) els.vehicle.classList.remove('arrived');
+    if (state.vehicleMarker) state.vehicleMarker.setLatLng(GPS_WAYPOINTS[0]);
+    if (state.trailPolyline) state.trailPolyline.setLatLngs(state.coveredPath);
 
     renderLiveValues('Collector Assigned');
     renderTimeline('Collector Assigned');
 
-    // setInterval keeps calling tick() — that is the vehicle movement.
     state.timer = setInterval(tick, TICK_MS);
   }
-
-  /* ------------------------------------------------------------------
-     Loading a pickup
-     ------------------------------------------------------------------ */
 
   async function loadPickup(id) {
     if (state.timer) {
@@ -408,58 +393,58 @@
       state.timer = null;
     }
 
-    WasteLoopValidation.setMessage(message, 'Fetching live status for ' + id + '...', 'success');
-    els.panel.hidden = true;
+    WasteLoopValidation.setMessage(els.message, 'Fetching live GPS status for ' + id + '...', 'success');
+    if (els.panel) els.panel.hidden = true;
 
     try {
       var data = await WasteLoopApi.getPickup(id);
       state.pickup = data.pickup;
-      els.lookup.hidden = true;
-      els.panel.hidden = false;
+      if (els.lookup) els.lookup.hidden = true;
+      if (els.panel) els.panel.hidden = false;
 
+      initMap();
       renderDetails();
       renderCertificateAction();
 
+      if (state.leafletMap) {
+        setTimeout(function () {
+          state.leafletMap.invalidateSize();
+        }, 200);
+      }
+
       if (state.pickup.status === 'Completed') {
-        // Already finished: show the end state instead of replaying the trip.
         state.step = TOTAL_STEPS;
-        var point = pointAtProgress(1);
-        placeMarker(els.vehicle, point);
-        drawStaticRoute();
+        var endCoord = GPS_WAYPOINTS[GPS_WAYPOINTS.length - 1];
+        if (state.vehicleMarker) state.vehicleMarker.setLatLng(endCoord);
+        if (state.trailPolyline) state.trailPolyline.setLatLngs(GPS_WAYPOINTS);
         renderLiveValues('Completed');
         renderTimeline('Completed');
-        if (els.vehicle) els.vehicle.classList.add('arrived');
         WasteLoopValidation.setMessage(
-          message,
+          els.message,
           'Pickup ' + state.pickup.id + ' is already Completed.',
           'success'
         );
       } else {
-        // Show the true stored status for one beat, then simulate the route.
         renderLiveValues(state.pickup.status);
         renderTimeline(state.pickup.status);
         WasteLoopValidation.setMessage(
-          message,
-          'Live tracking started for ' + state.pickup.id + '.',
+          els.message,
+          'Live GPS tracking connected for ' + state.pickup.id + '.',
           'success'
         );
         startSimulation();
       }
     } catch (error) {
-      WasteLoopValidation.setMessage(message, error.message, 'error');
+      WasteLoopValidation.setMessage(els.message, error.message, 'error');
     }
   }
-
-  /* ------------------------------------------------------------------
-     Wiring up events
-     ------------------------------------------------------------------ */
 
   if (els.form) {
     els.form.addEventListener('submit', function (event) {
       event.preventDefault();
       var id = els.input.value.trim().toUpperCase();
       if (!id) {
-        WasteLoopValidation.setMessage(message, 'Please enter a Pickup Request ID.', 'error');
+        WasteLoopValidation.setMessage(els.message, 'Please enter a Pickup Request ID.', 'error');
         els.input.focus();
         return;
       }
@@ -474,11 +459,8 @@
     });
   }
 
-  // Deep link from the pickup page: track.html?id=WL20491
   var params = new URLSearchParams(window.location.search);
   var initialId = params.get('id');
-
-  drawStaticRoute();
 
   WasteLoopApi.listPickups('limit=50')
     .then(function (data) {
@@ -507,9 +489,7 @@
       els.hint.innerHTML = '';
       els.hint.appendChild(select);
     })
-    .catch(function () {
-      /* the manual text field still works */
-    });
+    .catch(function () {});
 
   if (initialId) {
     els.input.value = initialId;

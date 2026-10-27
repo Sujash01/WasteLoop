@@ -7,6 +7,8 @@
   <title>WasteLoop | Academic Prototype for Waste Pickup &amp; Recycling</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/portal.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="assets/leaflet/leaflet.css">
 </head>
 <body>
 
@@ -87,6 +89,33 @@
         prototype portal. They are demonstration data and do not represent official
         government statistics.
       </p>
+    </div>
+  </section>
+
+  <!-- Live Tracking Map Showcase -->
+  <section class="section" id="home-tracking-section" style="padding-top: 10px;">
+    <div class="container">
+      <div class="section-heading">
+        <p class="section-label">Real-Time Fleet Operations</p>
+        <h2>Live Garbage Collector Tracking</h2>
+        <p class="section-lead" style="max-width:760px; color:var(--text-sec); margin:6px 0 20px;">
+          Track municipal garbage collection vehicles navigating city routes with real-time GPS simulation, dynamic ETA countdowns, and automated status milestones.
+        </p>
+      </div>
+
+      <div class="home-track-bar">
+        <label for="home-track-input" style="font-weight:700; font-size:0.92rem; color:var(--text); white-space:nowrap;">Track by Request ID:</label>
+        <input id="home-track-input" type="text" placeholder="Enter Pickup ID (e.g. WL20491)" aria-label="Enter Pickup Request ID to track">
+        <button id="home-track-btn" class="btn btn-primary" type="button">Track Request</button>
+        <div class="home-track-chips">
+          <span>Quick Select:</span>
+          <button type="button" class="chip-btn" data-id="WL20491">WL20491</button>
+          <button type="button" class="chip-btn" data-id="WL20492">WL20492</button>
+          <button type="button" class="chip-btn" data-id="demo">Live Demo</button>
+        </div>
+      </div>
+
+      <div id="home-tracking-mount"></div>
     </div>
   </section>
 
@@ -176,6 +205,9 @@
 <script src="js/main.js"></script>
 <script src="js/dates.js"></script>
 <script src="js/api.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="assets/leaflet/leaflet.js"></script>
+<script src="js/live-tracker.js"></script>
 <script src="js/home.js"></script>
 </body>
 </html>

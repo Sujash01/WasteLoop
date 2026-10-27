@@ -218,6 +218,209 @@ html[data-theme="dark"] .marker-label { color: var(--text); }
   color: var(--text-sec);
 }
 
+/* Live GPS Pulse & Radar Enhancements */
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #15803d;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
+}
+html[data-theme="dark"] .live-badge {
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.18);
+  border-color: rgba(74, 222, 128, 0.4);
+}
+.live-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  animation: pulse-dot-anim 1.6s infinite ease-out;
+}
+@keyframes pulse-dot-anim {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 7px rgba(34, 197, 94, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+.vehicle-marker .marker-icon {
+  position: relative;
+}
+.vehicle-marker .marker-icon::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--green);
+  opacity: 0.6;
+  animation: vehicle-radar-anim 2s infinite ease-out;
+  pointer-events: none;
+}
+@keyframes vehicle-radar-anim {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Leaflet Real Live Map Styles */
+.leaflet-map-stage {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  min-height: 340px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border-strong);
+  overflow: hidden;
+  z-index: 1;
+}
+.leaflet-container {
+  font-family: inherit;
+  background: #e5e7eb;
+}
+.leaflet-vehicle-icon, .leaflet-home-icon, .leaflet-depot-icon {
+  background: transparent !important;
+  border: none !important;
+}
+.leaflet-vehicle-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: #ffffff;
+  border: 2.5px solid #16a34a;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.28);
+  font-size: 1.35rem;
+  position: relative;
+  transition: transform 0.25s ease;
+}
+.leaflet-vehicle-inner::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid #22c55e;
+  opacity: 0.75;
+  animation: vehicle-radar-anim 1.8s infinite ease-out;
+  pointer-events: none;
+}
+.leaflet-home-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #ffffff;
+  border: 2.5px solid #2563eb;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  font-size: 1.25rem;
+  position: relative;
+}
+.leaflet-depot-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: #ffffff;
+  border: 2.5px solid #d97706;
+  border-radius: 50%;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.22);
+  font-size: 1.1rem;
+  position: relative;
+}
+.leaflet-marker-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 4px;
+  background: rgba(16, 40, 85, 0.92);
+  color: #ffffff;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+.tracker-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.tracker-controls .btn-sm {
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+}
+.home-track-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-xs);
+}
+.home-track-bar input {
+  flex: 1 1 240px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  font-size: 0.95rem;
+  background: var(--surface-solid);
+  color: var(--text);
+}
+.home-track-chips {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+  color: var(--text-sec);
+}
+.chip-btn {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  padding: 3px 10px;
+  font-size: 0.78rem;
+  font-family: var(--font-mono, monospace);
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--navy);
+  transition: all 0.2s;
+}
+.chip-btn:hover {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+}
+html[data-theme="dark"] .chip-btn {
+  color: var(--text);
+}
+
 /* ---------- Tracking detail cards ---------- */
 .track-details { display: grid; gap: 14px; }
 

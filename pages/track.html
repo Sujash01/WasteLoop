@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -8,7 +8,10 @@
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/forms.css">
   <link rel="stylesheet" href="../css/dashboard.css">
-  <link rel="stylesheet" href="../css/portal.css"></head>
+  <link rel="stylesheet" href="../css/portal.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="../assets/leaflet/leaflet.css">
+</head>
 <body>
 
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -88,35 +91,17 @@
   <section class="section" id="track-panel" hidden>
     <div class="container tracking-layout">
 
-      <!-- Simulated map -->
+      <!-- Real OpenStreetMap Leaflet Map -->
       <div class="map-card">
         <div class="map-head">
-          <h2>Collection Route — Simulated Map</h2>
-          <span class="map-tag">GPS not connected — simulated route</span>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="live-badge"><span class="live-pulse-dot"></span> LIVE OPENSTREETMAP API</span>
+            <h2 style="margin:0; font-size:1.05rem;">Collection Route &amp; GPS Telemetry</h2>
+          </div>
+          <span class="map-tag" style="color:var(--green); border-color:var(--green); background:rgba(22,163,74,0.1);">GPS CONNECTED</span>
         </div>
 
-        <div class="map-stage" id="track-map">
-          <!-- Street grid drawn with CSS gradients -->
-          <div class="map-grid-lines" aria-hidden="true"></div>
-
-          <!-- Planned route -->
-          <svg class="map-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <polyline id="route-line" class="route-base" points="" />
-            <polyline id="trail-line" class="route-trail" points="" />
-          </svg>
-
-          <!-- Home / citizen marker -->
-          <div class="map-marker home-marker" id="home-marker">
-            <span class="marker-icon" aria-hidden="true">🏠</span>
-            <span class="marker-label">Your Home</span>
-          </div>
-
-          <!-- Collector vehicle marker -->
-          <div class="map-marker vehicle-marker" id="vehicle-marker">
-            <span class="marker-icon" aria-hidden="true">🚛</span>
-            <span class="marker-label">Collector</span>
-          </div>
-        </div>
+        <div class="leaflet-map-stage" id="track-map"></div>
 
         <div class="map-progress">
           <div class="progress-track"><div class="progress-fill" id="track-progress-bar"></div></div>
@@ -219,6 +204,8 @@
 <script src="../js/validation.js"></script>
 <script src="../js/dates.js"></script>
 <script src="../js/api.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="../assets/leaflet/leaflet.js"></script>
 <script src="../js/track.js"></script>
 </body>
 </html>

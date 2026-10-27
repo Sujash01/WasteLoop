@@ -19,6 +19,22 @@ var WasteLoopApi = (function () {
     return error;
   }
 
+  function getBaseUrl() {
+    if (typeof window !== 'undefined' && window.WASTELOOP_API_BASE) {
+      return window.WASTELOOP_API_BASE.replace(/\/+$/, '');
+    }
+    if (typeof window !== 'undefined' && window.location) {
+      var port = window.location.port;
+      var protocol = window.location.protocol;
+      // If served via Live Server (port 5500, etc.) or static file preview,
+      // route API calls to the Node.js backend port 3000
+      if (protocol === 'file:' || (port && port !== '3000')) {
+        return 'http://127.0.0.1:3000';
+      }
+    }
+    return '';
+  }
+
   /**
    * Core request. Resolves with parsed JSON, rejects with a useful Error.
    * @param {string} path e.g. '/api/pickups'
@@ -36,7 +52,12 @@ var WasteLoopApi = (function () {
       init.body = JSON.stringify(settings.body);
     }
 
-    return fetch(path, init)
+    var base = getBaseUrl();
+    var fullUrl = (path.indexOf('http://') === 0 || path.indexOf('https://') === 0)
+      ? path
+      : base + path;
+
+    return fetch(fullUrl, init)
       .then(function (response) {
         return response
           .json()
@@ -47,8 +68,18 @@ var WasteLoopApi = (function () {
           .then(function (data) {
             if (!response.ok || data.ok === false) {
               var detail = data && data.error ? data.error : {};
+              var msg = detail.message;
+              if (!msg) {
+                if (response.status === 405) {
+                  msg = 'Method Not Allowed (405). The server hosting this page cannot handle API POST requests. If you are using VS Code Live Server, please ensure the WasteLoop Node.js server is running ("npm start") and visit http://127.0.0.1:3000/.';
+                } else if (response.status === 404) {
+                  msg = 'API endpoint not found (404). Please ensure the WasteLoop Node.js server is running via "npm start".';
+                } else {
+                  msg = 'Request failed (' + response.status + ').';
+                }
+              }
               throw buildError(
-                detail.message || 'Request failed (' + response.status + ').',
+                msg,
                 response.status,
                 detail.code,
                 detail.field
@@ -59,8 +90,9 @@ var WasteLoopApi = (function () {
       })
       .catch(function (error) {
         if (error && error.status) throw error;
+        var targetServer = getBaseUrl() || (typeof window !== 'undefined' && window.location && window.location.origin) || 'http://127.0.0.1:3000';
         throw buildError(
-          'Cannot reach the WasteLoop server. Please make sure it is running (npm start).',
+          'Cannot reach the WasteLoop server at ' + targetServer + '. Please make sure it is running (npm start).',
           0,
           'NETWORK_ERROR'
         );
@@ -69,6 +101,7 @@ var WasteLoopApi = (function () {
 
   var api = {
     request: request,
+    getBaseUrl: getBaseUrl,
 
     /* ---------- Pickups ---------- */
     createPickup: function (payload) {
