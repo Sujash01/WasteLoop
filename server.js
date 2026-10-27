@@ -22,6 +22,7 @@ const routes = require('./lib/routes');
 const { seedIfEmpty } = require('./lib/seed');
 const store = require('./lib/store');
 const dates = require('./lib/dates');
+const mongo = require('./lib/mongodb');
 
 const PORT = Number(process.env.PORT) || 3000;
 const HOST = process.env.HOST || '127.0.0.1';
@@ -183,12 +184,13 @@ const server = http.createServer((req, res) => {
 });
 
 async function start() {
+  await mongo.connect();
   const summary = await seedIfEmpty();
   console.log('');
   console.log('  WasteLoop — academic prototype portal');
   console.log('  -------------------------------------');
   console.log('  Server        : http://' + HOST + ':' + PORT);
-  console.log('  Data folder   : ' + path.relative(ROOT, store.DATA_DIR));
+  console.log('  Storage       : ' + (mongo.isMongoConnected() ? 'MongoDB' : 'Local JSON files (' + path.relative(ROOT, store.DATA_DIR) + ')'));
   console.log('  Booking policy: future dates only, earliest = ' +
     dates.toIsoDate(dates.earliestBookingDay(new Date())) + ' (tomorrow)');
   console.log(
